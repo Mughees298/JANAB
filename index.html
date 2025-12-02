@@ -3519,4 +3519,3524 @@
   </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>J△N△B Inventory & Orders</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Triangle favicon (△) as inline SVG -->
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill="%23b87333"/></svg>'
+  />
+
+  <style>
+    :root {
+      --bg: #f5f1eb;
+      --card-bg: #ffffff;
+      --accent: #b87333;
+      --accent-soft: #f4e4d4;
+      --accent-strong: #8b5a2b;
+      --border-soft: #e8ddd0;
+      --border-strong: #d4c4b0;
+      --text-main: #2c1810;
+      --text-soft: #6b5d4f;
+      --danger: #dc2626;
+      --danger-soft: #fee2e2;
+      --success: #16a34a;
+      --success-soft: #dcfce7;
+      --warning: #d97706;
+      --warning-soft: #fef3c7;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #f4e4d4 0, #f5f1eb 40%, #faf8f5 100%);
+      color: var(--text-main);
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body.dark-mode {
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
+      color: #f9fafb;
+    }
+
+    body.dark-mode .card {
+      background: #020617;
+      border-color: rgba(148, 163, 184, 0.4);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark-mode .top-header {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(55, 65, 81, 0.9);
+    }
+
+    body.dark-mode .login-card {
+      background: #020617;
+      border-color: rgba(55, 65, 81, 0.9);
+    }
+
+    body.dark-mode input[type="text"],
+    body.dark-mode input[type="number"],
+    body.dark-mode input[type="password"],
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background: #020617;
+      border-color: #111827;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode input:focus,
+    body.dark-mode textarea:focus,
+    body.dark-mode select:focus {
+      background: #020617;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.06);
+    }
+
+    body.dark-mode .table-wrapper {
+      background: #020617;
+      border-color: #111827;
+    }
+
+    body.dark-mode thead {
+      background: #111827;
+    }
+
+    body.dark-mode tr:nth-child(even) td {
+      background: rgba(17, 24, 39, 0.7);
+    }
+
+    body.dark-mode tr:hover td {
+      background: rgba(31, 41, 55, 0.9);
+    }
+
+    body.dark-mode .top-header-message {
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .btn-outline {
+      background: #020617;
+      border-color: #374151;
+      color: #f97316;
+    }
+
+    body.dark-mode .btn-ghost {
+      background: rgba(15, 23, 42, 0.7);
+      color: #e5e7eb;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 16px auto 60px;
+      padding: 0 24px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 768px) {
+      .page {
+        margin: 16px auto 32px;
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page {
+        margin: 12px auto 24px;
+        padding: 0 12px;
+      }
+    }
+
+    /* LOGIN SCREEN */
+
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 380px;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 24px 20px 20px;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .login-logo {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #fff;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      font-size: 13px;
+      box-shadow: 0 10px 25px rgba(184, 115, 51, 0.35);
+      margin-bottom: 14px;
+    }
+
+    .login-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .login-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 16px;
+    }
+
+    .login-error {
+      font-size: 12px;
+      color: var(--danger);
+      margin-top: 4px;
+    }
+
+    /* Top header bar - floating, rounded, sticky */
+    .top-header {
+      position: sticky;
+      top: 12px;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(245, 241, 235, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.24);
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+
+    .top-header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .top-header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      min-width: 280px;
+      max-width: 420px;
+    }
+
+    .logo-dot {
+      display: inline-flex;
+      min-width: 26px;
+      min-height: 26px;
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      box-shadow: 0 6px 16px rgba(184, 115, 51, 0.3);
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+    }
+
+    .top-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .top-title {
+      font-size: 24px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      word-break: break-word;
+    }
+
+    .brand-word {
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      font-size: 18px;
+    }
+
+    .brand-divider {
+      color: var(--text-soft);
+      font-size: 14px;
+    }
+
+    .top-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.5;
+      max-width: 520px;
+    }
+
+    .top-left-status {
+      margin-top: 8px;
+    }
+
+    .top-left-status .order-stats {
+      justify-content: flex-start;
+    }
+
+    .profit-actions-row {
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .top-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .top-header-actions .btn {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+
+    @media (max-width: 768px) {
+      .top-title {
+        font-size: 20px;
+      }
+      .brand-word {
+        font-size: 16px;
+      }
+      .top-subtitle {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .top-header {
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 18px;
+        padding: 10px 12px;
+        gap: 10px;
+      }
+      .top-header-right {
+        width: 100%;
+        align-items: stretch;
+      }
+      .order-stats {
+        justify-content: flex-start;
+      }
+      .profit-actions-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .top-header-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    .top-header-message {
+      width: 100%;
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      background: #f9fafb;
+      color: var(--text-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .top-header-message--info {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .top-header-message--error {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(248, 113, 113, 0.9);
+    }
+
+    .top-header-message--success {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(74, 222, 128, 0.9);
+    }
+
+    .order-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .order-stat-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: #f9fafb;
+      color: #374151;
+    }
+
+    .order-stat-label {
+      font-weight: 500;
+    }
+
+    .order-stat-value {
+      min-width: 14px;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .order-stat-new {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border-color: #bfdbfe;
+    }
+
+    .order-stat-ready {
+      background: var(--warning-soft);
+      color: #b45309;
+      border-color: #fcd34d;
+    }
+
+    .order-stat-delivered {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(22, 163, 74, 0.6);
+    }
+
+    .order-stat-returned,
+    .order-stat-cancelled {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(220, 38, 38, 0.6);
+    }
+
+    /* GLOBAL PROFIT SUMMARY IN HEADER */
+    .profit-summary-header {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      background: rgba(249, 250, 251, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: flex-end;
+    }
+
+    .profit-main-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .profit-sub-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      color: var(--text-soft);
+    }
+
+    .profit-label {
+      font-weight: 500;
+    }
+
+    .profit-number {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .profit-number-main {
+      font-weight: 600;
+    }
+
+    .profit-separator {
+      color: #9ca3af;
+    }
+
+    .profit-summary-header.profit-positive .profit-number-main {
+      color: var(--success);
+    }
+
+    .profit-summary-header.profit-negative .profit-number-main {
+      color: var(--danger);
+    }
+
+    @media (max-width: 640px) {
+      .profit-summary-header {
+        align-items: flex-start;
+      }
+      .profit-main-line,
+      .profit-sub-line {
+        flex-wrap: wrap;
+      }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .grid {
+        gap: 16px;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        padding: 18px;
+        border-radius: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 14px;
+        border-radius: 12px;
+      }
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 16px;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.5;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent-strong);
+    }
+
+    .pill-soft {
+      background: #f4e4d4;
+      color: #8b5a2b;
+      border-color: rgba(184, 115, 51, 0.5);
+    }
+
+    .pill-soft .pill-dot {
+      background: #8b5a2b;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .row > * {
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--text-soft);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      font-size: 14px;
+      outline: none;
+      background: #f9fafb;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      width: 100%;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(184, 115, 51, 0.15);
+      background: #ffffff;
+    }
+
+    textarea {
+      min-height: 80px;
+      max-height: 150px;
+    }
+
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-main);
+      transition: background 0.12s ease, transform 0.06s ease,
+        box-shadow 0.12s ease, border-color 0.12s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(to right, var(--accent), var(--accent-strong));
+      color: #ffffff;
+      box-shadow: 0 12px 22px rgba(184, 115, 51, 0.25);
+      border-color: transparent;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 14px 26px rgba(184, 115, 51, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 8px 16px rgba(184, 115, 51, 0.2);
+    }
+
+    .btn-outline {
+      border-color: var(--border-strong);
+      background: #f9fafb;
+      color: #f97316;
+    }
+
+    .btn-outline:hover {
+      background: #ffffff;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 999px;
+    }
+
+    .btn-icon {
+      padding-inline: 10px;
+    }
+
+    .btn-ghost {
+      border-color: transparent;
+      background: rgba(15, 23, 42, 0.03);
+      color: var(--text-soft);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 0.06);
+    }
+
+    .btn[disabled],
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+
+    .table-wrapper {
+      border-radius: 12px;
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      background: #f9fafb;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 8px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    thead {
+      background: #f4e4d4;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-soft);
+      text-align: left;
+    }
+
+    th {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #4b5563;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) td {
+      background: rgba(249, 250, 251, 0.9);
+    }
+
+    tr:hover td {
+      background: #f4e4d4;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid transparent;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+    }
+
+    .status-Available {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: rgba(22, 163, 74, 0.5);
+    }
+
+    .status-Available .status-dot {
+      background: var(--success);
+    }
+
+    .status-Low {
+      background: var(--warning-soft);
+      color: var(--warning);
+      border-color: rgba(249, 115, 22, 0.5);
+    }
+
+    .status-Low .status-dot {
+      background: var(--warning);
+    }
+
+    .status-Booked {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(220, 38, 38, 0.5);
+    }
+
+    .status-Booked .status-dot {
+      background: var(--danger);
+    }
+
+    .status-Unknown {
+      background: #e5e7eb;
+      color: #4b5563;
+      border-color: #d1d5db;
+    }
+
+    .status-Unknown .status-dot {
+      background: #6b7280;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .chip-soft {
+      background: #f3f4f6;
+    }
+
+    .muted {
+      color: var(--text-soft);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .cart-summary {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-soft);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cart-profit-summary {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cart-profit-summary strong {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cart-profit-profit-positive {
+      color: var(--success);
+    }
+
+    .cart-profit-profit-negative {
+      color: var(--danger);
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-row > * {
+      min-width: 140px;
+    }
+
+    .badge-count {
+      font-size: 11px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.06);
+      color: #374151;
+    }
+
+    .link {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+
+    .order-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    #allOrdersList {
+      max-height: 340px;
+    }
+
+    .order-item {
+      padding: 10px 10px;
+      border-bottom: 1px dashed rgba(148, 163, 184, 0.6);
+      cursor: pointer;
+      border-radius: 10px;
+      margin-bottom: 4px;
+      transition: background 0.12s ease, border-color 0.12s ease;
+    }
+
+    .order-item:hover {
+      background: rgba(244, 228, 212, 0.4);
+    }
+
+    .order-id {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .order-meta {
+      font-size: 12px;
+      color: var(--text-soft);
+      margin-top: 4px;
+      line-height: 1.5;
+    }
+
+    .order-note {
+      font-size: 12px;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* Order status highlighting in lists */
+    .order-status-delivered {
+      background: rgba(22, 163, 74, 0.06);
+      border-color: rgba(22, 163, 74, 0.4);
+    }
+
+    .order-status-delivered .order-id {
+      color: var(--success);
+    }
+
+    .order-status-returned,
+    .order-status-cancelled {
+      background: rgba(220, 38, 38, 0.06);
+      border-color: rgba(220, 38, 38, 0.5);
+    }
+
+    .order-status-returned .order-id,
+    .order-status-cancelled .order-id {
+      color: var(--danger);
+    }
+
+    img, video, iframe, embed, object {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Modal shared styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #ffffff;
+      border-radius: 18px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.35);
+      border: 1px solid var(--border-soft);
+    }
+
+    body.dark-mode .modal {
+      background: #020617;
+      border-color: #111827;
+    }
+
+    .modal-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .modal-body {
+      padding: 12px 16px 10px;
+      overflow-y: auto;
+      font-size: 13px;
+    }
+
+    .modal-footer {
+      padding: 10px 16px 12px;
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .modal-meta-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px 16px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 640px) {
+      .modal-meta-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .modal-label {
+      font-size: 11px;
+      color: var(--text-soft);
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .modal-text {
+      font-size: 13px;
+    }
+
+    .modal-items-wrapper {
+      border-radius: 10px;
+      border: 1px solid var(--border-soft);
+      max-height: 220px;
+      overflow: auto;
+      background: #f9fafb;
+      margin-top: 4px;
+    }
+
+    body.dark-mode .modal-items-wrapper {
+      background: #020617;
+      border-color: #111827;
+    }
+
+    .modal-items-wrapper table {
+      min-width: 0;
+      font-size: 13px;
+    }
+
+    .modal-field-display {
+      display: inline;
+    }
+
+    .modal-field-input {
+      display: none;
+      width: 100%;
+      margin-top: 4px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border-soft);
+      font-size: 13px;
+      background: #f9fafb;
+    }
+
+    body.dark-mode .modal-field-input {
+      background: #020617;
+      border-color: #111827;
+      color: #e5e7eb;
+    }
+
+    .modal-field-input:focus {
+      border-color: var(--accent);
+      outline: none;
+      background: #ffffff;
+    }
+
+    body.dark-mode .modal-field-input:focus {
+      background: #020617;
+    }
+
+    .modal-field-input-textarea {
+      min-height: 50px;
+      max-height: 120px;
+      resize: vertical;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      border: 1px solid #e5e7eb;
+      background: #f9fafb;
+      text-transform: capitalize;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">J△N△B</div>
+      <div class="login-title">Back-office panel</div>
+      <div class="login-subtitle">
+        Enter access code to open JANAB inventory &amp; orders panel.
+      </div>
+      <div class="field">
+        <label for="passwordInput">Access code</label>
+        <input type="password" id="passwordInput" placeholder="•••••••" />
+      </div>
+      <!-- Remember me -->
+      <div class="field" style="flex-direction:row;align-items:center;gap:6px;margin-top:6px;">
+        <input type="checkbox" id="rememberMe" style="width:auto;" />
+        <label for="rememberMe" style="margin:0;font-size:12px;color:var(--text-soft);">
+          Remember me on this device
+        </label>
+      </div>
+      <div id="loginError" class="login-error" style="display:none;"></div>
+      <div class="btn-row" style="justify-content: flex-end; margin-top: 16px;">
+        <button type="button" id="loginBtn" class="btn btn-primary">
+          Enter panel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP PAGE (hidden until password correct) -->
+  <div class="page" id="appPage" style="display:none;">
+    <!-- TOP HEADER WITH GLOBAL MESSAGE -->
+    <header class="top-header">
+      <div class="top-header-left">
+        <span class="logo-dot">
+          J△N△B
+        </span>
+        <div class="top-title-block">
+          <div class="top-title">
+            <span class="brand-word">J△N△B</span>
+            <span class="brand-divider">•</span>
+            <span>Inventory &amp; Orders</span>
+          </div>
+          <div class="top-subtitle">
+            JANAB Clothing back-office panel. Google Sheet se directly connected inventory + orders.
+          </div>
+          <!-- Status pills under subtitle -->
+          <div class="top-left-status">
+            <div class="order-stats">
+              <div class="order-stat-chip order-stat-new">
+                <span class="order-stat-label">New</span>
+                <span class="order-stat-value" id="statNew">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-ready">
+                <span class="order-stat-label">Ready</span>
+                <span class="order-stat-value" id="statReady">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-delivered">
+                <span class="order-stat-label">Delivered</span>
+                <span class="order-stat-value" id="statDelivered">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-returned">
+                <span class="order-stat-label">Returned</span>
+                <span class="order-stat-value" id="statReturned">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-cancelled">
+                <span class="order-stat-label">Cancelled</span>
+                <span class="order-stat-value" id="statCancelled">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-header-right">
+        <div class="profit-actions-row">
+          <!-- GLOBAL PROFIT SUMMARY -->
+          <div id="profitSummaryRoot" class="profit-summary-header">
+            <div class="profit-main-line">
+              <span class="profit-label">Overall profit</span>
+              <span id="globalProfitPercent" class="profit-number profit-number-main">0%</span>
+              <span class="profit-separator">•</span>
+              <span id="globalProfitAmount" class="profit-number profit-number-main">Rs 0</span>
+            </div>
+            <div class="profit-sub-line">
+              <span class="profit-label">Cost base</span>
+              <span id="globalTotalCost" class="profit-number">Rs 0</span>
+              <span class="profit-separator">•</span>
+              <span class="profit-label">Total sell</span>
+              <span id="globalTotalSell" class="profit-number">Rs 0</span>
+            </div>
+          </div>
+
+          <!-- Header action buttons -->
+          <div class="top-header-actions">
+            <button type="button" id="darkModeToggle" class="btn btn-small btn-ghost">
+              🌙 Dark mode
+            </button>
+            <button type="button" id="resetAllBtn" class="btn btn-small btn-outline">
+              Reset all data
+            </button>
+            <button type="button" id="liveSheetBtn" class="btn btn-small btn-primary">
+              Live with Google Sheet
+            </button>
+          </div>
+        </div>
+
+        <div id="globalMessageBar" class="top-header-message top-header-message--info">
+          <span id="globalMessageText">Ready.</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: Inventory + Add Product -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Inventory</div>
+            <div class="card-subtitle">
+              Google Sheet tab <strong>"Inventory"</strong> se live data.
+            </div>
+          </div>
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span id="inventoryStatusLabel">Loading…</span>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <div class="field">
+            <label for="searchInput">Search (Name / Color / Size / ID)</label>
+            <input type="text" id="searchInput" placeholder="Type to filter inventory…" />
+          </div>
+          <div class="field">
+            <label for="statusFilter">Status</label>
+            <select id="statusFilter">
+              <option value="">All</option>
+              <option value="Available">Available</option>
+              <option value="Low">Low</option>
+              <option value="Booked">Booked</option>
+            </select>
+          </div>
+          <div class="field" style="max-width: 120px;">
+            <label>&nbsp;</label>
+            <button type="button" id="resetFiltersBtn" class="btn btn-outline btn-small">
+              Reset filters
+            </button>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Product</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Qty</th>
+                <th>Cost / unit</th>
+                <th>Status</th>
+                <th>Cart / Edit</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryBody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cart-summary">
+          <div>
+            <span class="badge-count">
+              <span id="inventoryCount">0</span> products
+            </span>
+          </div>
+          <div class="muted">
+            Status logic:
+            <span class="chip chip-soft">Available &gt; 2</span>
+            <span class="chip chip-soft">Low ≤ 2</span>
+            <span class="chip chip-soft">Booked = 0</span>
+          </div>
+        </div>
+
+        <hr style="margin: 24px 0; border: none; border-top: 1px dashed #e5e7eb;" />
+
+        <!-- Add product section -->
+        <div class="card-header">
+          <div>
+            <div class="card-title">Add product</div>
+            <div class="card-subtitle">
+              Naya product Sheet me add karein (Inventory tab).
+            </div>
+          </div>
+          <span class="pill-soft pill">
+            <span class="pill-dot"></span>
+            Form → Google Sheet
+          </span>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="pName">Name</label>
+            <input type="text" id="pName" placeholder="e.g. T-Shirt" />
+          </div>
+          <div class="field">
+            <label for="pColor">Color</label>
+            <input type="text" id="pColor" placeholder="e.g. Black" />
+          </div>
+          <div class="field">
+            <label for="pSize">Size</label>
+            <input type="text" id="pSize" placeholder="e.g. M, L, 39" />
+          </div>
+          <div class="field" style="max-width: 120px;">
+            <label for="pQty">Qty</label>
+            <input type="number" id="pQty" placeholder="0" min="1" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="pCostPrice">Actual price per unit</label>
+            <input type="number" id="pCostPrice" placeholder="Purchase price" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="pOtherExpenses">Other expenses per unit</label>
+            <input type="number" id="pOtherExpenses" placeholder="Packing / shipping…" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="pUnitCost">Total cost per unit</label>
+            <input type="number" id="pUnitCost" placeholder="Auto" readonly />
+          </div>
+          <div class="field">
+            <label for="pCode">Custom Code (optional)</label>
+            <input type="text" id="pCode" placeholder="Leave blank for auto P-0001, P-0002…" />
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" id="addProductBtn" class="btn btn-primary">
+            + Add product to inventory
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Cart + Order + Orders list -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <div class="card-title">Cart &amp; Order</div>
+            <div class="card-subtitle">
+              Inventory se items select karein, yahan se order place hoga.
+            </div>
+          </div>
+          <span class="pill-soft pill">
+            <span class="pill-dot"></span>
+            Live with Google Sheet
+          </span>
+        </div>
+
+        <div class="table-wrapper" style="max-height: 200px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Selling / unit</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="cartBody">
+              <!-- cart rows -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cart-summary">
+          <div>
+            <span class="badge-count">
+              <span id="cartItemsCount">0</span> items,
+              total qty <span id="cartQtyTotal">0</span>
+            </span>
+          </div>
+          <button type="button" id="clearCartBtn" class="btn btn-outline btn-small">
+            Clear cart
+          </button>
+        </div>
+
+        <div class="cart-profit-summary">
+          <span>Cost: <strong id="cartTotalCost">0</strong></span>
+          <span>Sell: <strong id="cartTotalSell">0</strong></span>
+          <span>Profit/Loss: <strong id="cartTotalProfit">0</strong></span>
+        </div>
+
+        <hr style="margin: 24px 0; border: none; border-top: 1px dashed #e5e7eb;" />
+
+        <div class="card-header">
+          <div>
+            <div class="card-title">Customer details</div>
+            <div class="card-subtitle">
+              Yeh info <strong>"Orders"</strong> tab me save hogi.
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="cName">Name *</label>
+            <input type="text" id="cName" placeholder="Customer full name" />
+          </div>
+          <div class="field">
+            <label for="cPhone">Phone</label>
+            <input type="text" id="cPhone" placeholder="03xx-xxxxxxx" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="cAddress">Address</label>
+          <textarea id="cAddress" placeholder="Complete address / city"></textarea>
+        </div>
+        <div class="field">
+          <label for="cNote">Note (optional)</label>
+          <textarea id="cNote" placeholder="Any special note…"></textarea>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" id="placeOrderBtn" class="btn btn-primary">
+            ✅ Place order
+          </button>
+        </div>
+
+        <hr style="margin: 24px 0; border: none; border-top: 1px dashed #e5e7eb;" />
+
+        <div class="flex-between">
+          <div class="card-title" style="font-size: 15px;">Recent orders (preview)</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" id="openAllOrdersBtn" class="btn btn-outline btn-small btn-icon" title="View all orders">
+              📋
+            </button>
+            <a href="javascript:void(0)" id="reloadOrdersLink" class="link">Reload</a>
+          </div>
+        </div>
+
+        <!-- Orders search + filter (preview) -->
+        <div class="search-row" style="margin-top:-4px;margin-bottom:10px;">
+          <div class="field" style="flex:1;min-width:160px;">
+            <label for="orderSearchInput">Search orders</label>
+            <input
+              type="text"
+              id="orderSearchInput"
+              placeholder="Order ID, product ID, color, tracking…"
+            />
+          </div>
+          <div class="field" style="max-width:150px;">
+            <label for="orderStatusFilter">Status</label>
+            <select id="orderStatusFilter">
+              <option value="">All</option>
+              <option value="new">New</option>
+              <option value="ready">Ready</option>
+              <option value="delivered">Delivered</option>
+              <option value="returned">Returned</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <ul id="ordersList" class="order-list">
+          <!-- orders preview -->
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory EDIT modal -->
+  <div id="inventoryModalOverlay" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="inventoryModalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="inventoryModalTitle">Edit inventory item</div>
+        <button type="button" id="inventoryModalCloseBtn" class="btn btn-outline btn-small btn-icon">
+          ✖
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="field">
+            <label for="invCode">ID (read-only)</label>
+            <input type="text" id="invCode" readonly />
+          </div>
+          <div class="field">
+            <label for="invName">Name</label>
+            <input type="text" id="invName" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="invColor">Color</label>
+            <input type="text" id="invColor" />
+          </div>
+          <div class="field">
+            <label for="invSize">Size</label>
+            <input type="text" id="invSize" />
+          </div>
+          <div class="field" style="max-width: 120px;">
+            <label for="invQty">Qty</label>
+            <input type="number" id="invQty" min="0" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="invCostPrice">Actual price / unit</label>
+            <input type="number" id="invCostPrice" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="invOtherExpenses">Other expenses / unit</label>
+            <input type="number" id="invOtherExpenses" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="invUnitCost">Total cost / unit</label>
+            <input type="number" id="invUnitCost" readonly />
+          </div>
+        </div>
+        <div class="muted" id="invModalInfo">
+          Update fields and click <strong>Save changes</strong>.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="inventoryModalSaveBtn" class="btn btn-primary btn-small">
+          Save changes
+        </button>
+        <button type="button" id="inventoryModalCancelBtn" class="btn btn-outline btn-small">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order details modal (with edit + copy message) -->
+  <div id="orderModalOverlay" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="orderModalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="orderModalTitle">Order details</div>
+        <button type="button" id="orderModalCloseBtn" class="btn btn-outline btn-small btn-icon">
+          ✖
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta-grid">
+          <div>
+            <div class="modal-label">Order ID</div>
+            <div class="modal-text" id="modalOrderId">-</div>
+          </div>
+          <div>
+            <div class="modal-label">Date &amp; time</div>
+            <div class="modal-text" id="modalOrderDate">-</div>
+          </div>
+          <div>
+            <div class="modal-label">Customer</div>
+            <div class="modal-text">
+              <span id="modalOrderCustomerDisplay" class="modal-field-display">-</span>
+              <input id="modalOrderCustomerInput" class="modal-field-input" type="text" />
+            </div>
+          </div>
+          <div>
+            <div class="modal-label">Phone</div>
+            <div class="modal-text">
+              <span id="modalOrderPhoneDisplay" class="modal-field-display">-</span>
+              <input id="modalOrderPhoneInput" class="modal-field-input" type="text" />
+            </div>
+          </div>
+          <div>
+            <div class="modal-label">Tracking ID</div>
+            <div class="modal-text">
+              <span id="modalOrderTrackingDisplay" class="modal-field-display">-</span>
+              <input id="modalOrderTrackingInput" class="modal-field-input" type="text" />
+            </div>
+          </div>
+          <div>
+            <div class="modal-label">Status</div>
+            <div class="modal-text">
+              <span id="modalOrderStatusDisplay" class="modal-field-display status-badge">New</span>
+              <select id="modalOrderStatusInput" class="modal-field-input">
+                <option value="new">New</option>
+                <option value="ready">Ready</option>
+                <option value="delivered">Delivered</option>
+                <option value="returned">Returned</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:8px;">
+          <div class="modal-label">Address</div>
+          <div class="modal-text">
+            <span id="modalOrderAddressDisplay" class="modal-field-display">-</span>
+            <textarea id="modalOrderAddressInput" class="modal-field-input modal-field-input-textarea"></textarea>
+          </div>
+        </div>
+        <div style="margin-bottom:8px;">
+          <div class="modal-label">Note</div>
+          <div class="modal-text">
+            <span id="modalOrderNoteDisplay" class="modal-field-display">-</span>
+            <textarea id="modalOrderNoteInput" class="modal-field-input modal-field-input-textarea"></textarea>
+          </div>
+        </div>
+
+        <div>
+          <div class="modal-label">Items</div>
+          <div class="modal-items-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th style="text-align:left;">Product</th>
+                  <th style="text-align:left;">Color</th>
+                  <th style="text-align:left;">Size</th>
+                  <th style="text-align:left;">ID</th>
+                  <th style="text-align:right;">Qty</th>
+                </tr>
+              </thead>
+              <tbody id="modalItemsBody">
+                <!-- items -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="orderModalEditBtn" class="btn btn-outline btn-small">
+          Edit
+        </button>
+        <button type="button" id="orderModalSaveBtn" class="btn btn-primary btn-small" style="display:none;">
+          Save changes
+        </button>
+        <button type="button" id="orderModalCopyMsgBtn" class="btn btn-outline btn-small">
+          Copy confirm message
+        </button>
+        <button type="button" id="orderModalCloseBtn2" class="btn btn-outline btn-small">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL ORDERS LIST MODAL -->
+  <div id="allOrdersModalOverlay" class="modal-overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="allOrdersModalTitle">
+      <div class="modal-header">
+        <div class="modal-title" id="allOrdersModalTitle">All orders</div>
+        <button type="button" id="allOrdersModalCloseBtn" class="btn btn-outline btn-small btn-icon">
+          ✖
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Search + filter inside all-orders popup -->
+        <div class="flex-between" style="align-items:flex-end;margin-bottom:10px;gap:10px;">
+          <div style="flex:1;min-width:160px;">
+            <div class="modal-label">Search orders</div>
+            <input
+              type="text"
+              id="orderSearchInputAll"
+              class="modal-field-input"
+              style="display:block;margin-top:0;"
+              placeholder="Order ID, product, color, tracking…"
+            />
+          </div>
+          <div style="width:140px;">
+            <div class="modal-label">Status</div>
+            <select
+              id="orderStatusFilterAll"
+              class="modal-field-input"
+              style="display:block;margin-top:0;"
+            >
+              <option value="">All</option>
+              <option value="new">New</option>
+              <option value="ready">Ready</option>
+              <option value="delivered">Delivered</option>
+              <option value="returned">Returned</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-label">Orders</div>
+        <ul id="allOrdersList" class="order-list">
+          <!-- all orders -->
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="allOrdersModalCloseBtn2" class="btn btn-outline btn-small">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ====== CONFIG: your Apps Script Web App URL ======
+    const BASE_URL = "https://script.google.com/macros/s/AKfycbxhL4JLzUhsw9rAay9Ots0RiUlAFoI8WGf1P6hH2ceyDmvU4Ap69o5EPF0J81zm_3TIQg/exec"; // <- apna script URL
+
+    // ====== API helpers ======
+    async function apiGet(action, params = {}) {
+      const url = new URL(BASE_URL);
+      url.searchParams.set("action", action);
+      Object.entries(params).forEach(([key, value]) => {
+        url.searchParams.set(key, String(value));
+      });
+
+      let response;
+      try {
+        response = await fetch(url.toString(), {
+          method: "GET",
+          redirect: "follow",
+        });
+      } catch (error) {
+        console.error("GET network error:", error);
+        throw new Error("Network error: Google Script se connect nahi ho raha.");
+      }
+
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error("GET JSON parse error:", err, text);
+        throw new Error("Server se invalid JSON mila (GET).");
+      }
+
+      return data;
+    }
+
+    async function apiPost(action, payload = {}) {
+      const url = new URL(BASE_URL);
+      url.searchParams.set("action", action);
+
+      let response;
+      try {
+        response = await fetch(url.toString(), {
+          method: "POST",
+          redirect: "follow",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+          },
+          body: JSON.stringify(payload)
+        });
+      } catch (error) {
+        console.error("POST network error:", error);
+        throw new Error("Network error: Google Script se connect nahi ho raha.");
+      }
+
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error("POST JSON parse error:", err, text);
+        throw new Error("Server se invalid JSON mila (POST).");
+      }
+
+      return data;
+    }
+
+    // ====== Local state ======
+    let inventory = [];
+    let cart = [];
+    let ordersPreview = [];
+    let editingProductId = null;
+    let activeOrderIndex = null;
+    let orderModalEditMode = false;
+    let appInitialized = false;
+
+    // ====== DOM refs ======
+
+    // Login
+    const loginScreen = document.getElementById("loginScreen");
+    const appPage = document.getElementById("appPage");
+    const passwordInput = document.getElementById("passwordInput");
+    const loginBtn = document.getElementById("loginBtn");
+    const loginError = document.getElementById("loginError");
+    const rememberMeCheckbox = document.getElementById("rememberMe");
+    const REMEMBER_KEY = "JANAB_PANEL_REMEMBER";
+    const DARK_MODE_KEY = "JANAB_PANEL_DARK_MODE";
+
+    // Inventory / cart / orders
+    const inventoryBody = document.getElementById("inventoryBody");
+    const inventoryStatusLabel = document.getElementById("inventoryStatusLabel");
+    const inventoryCountEl = document.getElementById("inventoryCount");
+
+    const searchInput = document.getElementById("searchInput");
+    const statusFilter = document.getElementById("statusFilter");
+    const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+
+    const cartBody = document.getElementById("cartBody");
+    const cartItemsCountEl = document.getElementById("cartItemsCount");
+    const cartQtyTotalEl = document.getElementById("cartQtyTotal");
+    const clearCartBtn = document.getElementById("clearCartBtn");
+
+    const cartTotalCostEl = document.getElementById("cartTotalCost");
+    const cartTotalSellEl = document.getElementById("cartTotalSell");
+    const cartTotalProfitEl = document.getElementById("cartTotalProfit");
+
+    const cName = document.getElementById("cName");
+    const cPhone = document.getElementById("cPhone");
+    const cAddress = document.getElementById("cAddress");
+    const cNote = document.getElementById("cNote");
+    const placeOrderBtn = document.getElementById("placeOrderBtn");
+
+    const pName = document.getElementById("pName");
+    const pColor = document.getElementById("pColor");
+    const pSize = document.getElementById("pSize");
+    const pQty = document.getElementById("pQty");
+    const pCode = document.getElementById("pCode");
+    const pCostPrice = document.getElementById("pCostPrice");
+    const pOtherExpenses = document.getElementById("pOtherExpenses");
+    const pUnitCost = document.getElementById("pUnitCost");
+    const addProductBtn = document.getElementById("addProductBtn");
+
+    const ordersList = document.getElementById("ordersList");
+    const reloadOrdersLink = document.getElementById("reloadOrdersLink");
+    const openAllOrdersBtn = document.getElementById("openAllOrdersBtn");
+
+    // Orders search/filter (preview)
+    const orderSearchInput = document.getElementById("orderSearchInput");
+    const orderStatusFilter = document.getElementById("orderStatusFilter");
+
+    // Global header message
+    const globalMessageBar = document.getElementById("globalMessageBar");
+    const globalMessageText = document.getElementById("globalMessageText");
+
+    // Header status counters
+    const statNewEl = document.getElementById("statNew");
+    const statReadyEl = document.getElementById("statReady");
+    const statDeliveredEl = document.getElementById("statDelivered");
+    const statReturnedEl = document.getElementById("statReturned");
+    const statCancelledEl = document.getElementById("statCancelled");
+
+    // Global profit header refs
+    const profitSummaryRoot = document.getElementById("profitSummaryRoot");
+    const globalProfitPercentEl = document.getElementById("globalProfitPercent");
+    const globalProfitAmountEl = document.getElementById("globalProfitAmount");
+    const globalTotalCostEl = document.getElementById("globalTotalCost");
+    const globalTotalSellEl = document.getElementById("globalTotalSell");
+
+    // Header action buttons
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    const resetAllBtn = document.getElementById("resetAllBtn");
+    const liveSheetBtn = document.getElementById("liveSheetBtn");
+
+    // Inventory modal refs
+    const inventoryModalOverlay = document.getElementById("inventoryModalOverlay");
+    const inventoryModalCloseBtn = document.getElementById("inventoryModalCloseBtn");
+    const inventoryModalCancelBtn = document.getElementById("inventoryModalCancelBtn");
+    const inventoryModalSaveBtn = document.getElementById("inventoryModalSaveBtn");
+    const invCodeInput = document.getElementById("invCode");
+    const invNameInput = document.getElementById("invName");
+    const invColorInput = document.getElementById("invColor");
+    const invSizeInput = document.getElementById("invSize");
+    const invQtyInput = document.getElementById("invQty");
+    const invCostPriceInput = document.getElementById("invCostPrice");
+    const invOtherExpensesInput = document.getElementById("invOtherExpenses");
+    const invUnitCostInput = document.getElementById("invUnitCost");
+    const invModalInfo = document.getElementById("invModalInfo");
+
+    // Order modal refs
+    const orderModalOverlay = document.getElementById("orderModalOverlay");
+    const orderModalCloseBtn = document.getElementById("orderModalCloseBtn");
+    const orderModalCloseBtn2 = document.getElementById("orderModalCloseBtn2");
+    const orderModalEditBtn = document.getElementById("orderModalEditBtn");
+    const orderModalSaveBtn = document.getElementById("orderModalSaveBtn");
+    const orderModalCopyMsgBtn = document.getElementById("orderModalCopyMsgBtn");
+
+    const modalOrderId = document.getElementById("modalOrderId");
+    const modalOrderDate = document.getElementById("modalOrderDate");
+
+    const modalOrderCustomerDisplay = document.getElementById("modalOrderCustomerDisplay");
+    const modalOrderCustomerInput = document.getElementById("modalOrderCustomerInput");
+
+    const modalOrderPhoneDisplay = document.getElementById("modalOrderPhoneDisplay");
+    const modalOrderPhoneInput = document.getElementById("modalOrderPhoneInput");
+
+    const modalOrderAddressDisplay = document.getElementById("modalOrderAddressDisplay");
+    const modalOrderAddressInput = document.getElementById("modalOrderAddressInput");
+
+    const modalOrderNoteDisplay = document.getElementById("modalOrderNoteDisplay");
+    const modalOrderNoteInput = document.getElementById("modalOrderNoteInput");
+
+    const modalOrderTrackingDisplay = document.getElementById("modalOrderTrackingDisplay");
+    const modalOrderTrackingInput = document.getElementById("modalOrderTrackingInput");
+
+    const modalOrderStatusDisplay = document.getElementById("modalOrderStatusDisplay");
+    const modalOrderStatusInput = document.getElementById("modalOrderStatusInput");
+
+    const modalItemsBody = document.getElementById("modalItemsBody");
+
+    // All-orders modal refs
+    const allOrdersModalOverlay = document.getElementById("allOrdersModalOverlay");
+    const allOrdersModalCloseBtn = document.getElementById("allOrdersModalCloseBtn");
+    const allOrdersModalCloseBtn2 = document.getElementById("allOrdersModalCloseBtn2");
+    const allOrdersList = document.getElementById("allOrdersList");
+    const orderSearchInputAll = document.getElementById("orderSearchInputAll");
+    const orderStatusFilterAll = document.getElementById("orderStatusFilterAll");
+
+    // ====== UI helpers (header message) ======
+    function setGlobalMessage(type, message) {
+      if (!globalMessageBar || !globalMessageText) return;
+      const baseClass = "top-header-message";
+      let extra = "top-header-message--info";
+      if (type === "error") extra = "top-header-message--error";
+      else if (type === "success") extra = "top-header-message--success";
+      else extra = "top-header-message--info";
+      globalMessageBar.className = baseClass + " " + extra;
+      globalMessageText.textContent = message || "Ready.";
+    }
+
+    function showError(message) {
+      if (!message) return;
+      setGlobalMessage("error", message);
+    }
+
+    function showSuccess(message) {
+      if (!message) return;
+      setGlobalMessage("success", message);
+    }
+
+    function clearMessages(infoMessage) {
+      setGlobalMessage("info", infoMessage || "Ready.");
+    }
+
+    // ====== Dark mode helpers ======
+    function applyDarkModeFromStorage() {
+      try {
+        if (!window.localStorage) return;
+        const saved = localStorage.getItem(DARK_MODE_KEY);
+        if (saved === "1") {
+          document.body.classList.add("dark-mode");
+          if (darkModeToggle) {
+            darkModeToggle.textContent = "☀️ Light mode";
+          }
+        }
+      } catch (e) {
+        console.warn("Dark mode storage error:", e);
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle("dark-mode");
+      try {
+        if (window.localStorage) {
+          if (isDark) {
+            localStorage.setItem(DARK_MODE_KEY, "1");
+          } else {
+            localStorage.removeItem(DARK_MODE_KEY);
+          }
+        }
+      } catch (e) {
+        console.warn("Dark mode save error:", e);
+      }
+      if (darkModeToggle) {
+        darkModeToggle.textContent = isDark ? "☀️ Light mode" : "🌙 Dark mode";
+      }
+    }
+
+    // ====== Header order stats ======
+    function updateOrderStatusStats(orders) {
+      if (!Array.isArray(orders)) orders = [];
+      let cNew = 0, cReady = 0, cDelivered = 0, cReturned = 0, cCancelled = 0;
+
+      orders.forEach(o => {
+        const st = (o.status || "new").toLowerCase();
+        if (st === "ready") cReady++;
+        else if (st === "delivered") cDelivered++;
+        else if (st === "returned") cReturned++;
+        else if (st === "cancelled") cCancelled++;
+        else cNew++;
+      });
+
+      if (statNewEl) statNewEl.textContent = String(cNew);
+      if (statReadyEl) statReadyEl.textContent = String(cReady);
+      if (statDeliveredEl) statDeliveredEl.textContent = String(cDelivered);
+      if (statReturnedEl) statReturnedEl.textContent = String(cReturned);
+      if (statCancelledEl) statCancelledEl.textContent = String(cCancelled);
+    }
+
+    // ====== GLOBAL PROFIT STATS (ALL ORDERS) ======
+    function updateGlobalProfitStats(orders) {
+      if (
+        !globalProfitPercentEl ||
+        !globalProfitAmountEl ||
+        !globalTotalCostEl ||
+        !globalTotalSellEl
+      ) return;
+
+      if (!Array.isArray(orders)) orders = [];
+
+      let totalCost = 0;
+      let totalSell = 0;
+      let totalProfit = 0;
+
+      orders.forEach((o) => {
+        // If backend already send totals per order:
+        const hasTotals =
+          o &&
+          (o.totalCost != null ||
+           o.totalSell != null ||
+           o.profit != null);
+
+        if (hasTotals) {
+          const oCost = o.totalCost != null && !Number.isNaN(Number(o.totalCost))
+            ? Number(o.totalCost) : 0;
+          const oSell = o.totalSell != null && !Number.isNaN(Number(o.totalSell))
+            ? Number(o.totalSell) : 0;
+          const oProfit = o.profit != null && !Number.isNaN(Number(o.profit))
+            ? Number(o.profit)
+            : (oSell - oCost);
+
+          totalCost += oCost;
+          totalSell += oSell;
+          totalProfit += oProfit;
+        } else if (Array.isArray(o.items)) {
+          // Fallback: calculate from items + inventory unit cost / sellPrice
+          o.items.forEach((it) => {
+            const qty = Number(it.qty || 0);
+            if (!qty) return;
+
+            const invItem = inventory.find(p => String(p.id) === String(it.id));
+            const unitCost = invItem
+              ? Number(
+                  invItem.unitCost ||
+                  (invItem.costPrice || 0) + (invItem.otherExpenses || 0)
+                )
+              : 0;
+            const sellUnit = Number(it.sellPrice || 0);
+
+            totalCost += unitCost * qty;
+            totalSell += sellUnit * qty;
+            totalProfit += (sellUnit - unitCost) * qty;
+          });
+        }
+      });
+
+      const percent = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0;
+
+      globalProfitPercentEl.textContent =
+        totalCost > 0 ? percent.toFixed(1) + "%" : "0%";
+      globalProfitAmountEl.textContent = "Rs " + totalProfit.toFixed(0);
+      globalTotalCostEl.textContent = "Rs " + totalCost.toFixed(0);
+      globalTotalSellEl.textContent = "Rs " + totalSell.toFixed(0);
+
+      if (profitSummaryRoot) {
+        profitSummaryRoot.classList.remove("profit-positive", "profit-negative");
+        if (totalProfit > 0.01) {
+          profitSummaryRoot.classList.add("profit-positive");
+        } else if (totalProfit < -0.01) {
+          profitSummaryRoot.classList.add("profit-negative");
+        }
+      }
+    }
+
+    // ====== Inventory rendering ======
+    function filteredInventory() {
+      const term = searchInput.value.trim().toLowerCase();
+      const statusValue = statusFilter.value;
+
+      return inventory.filter(item => {
+        let ok = true;
+        if (term) {
+          const combo = (item.id + " " + item.name + " " + item.color + " " + item.size)
+            .toLowerCase();
+          ok = combo.includes(term);
+        }
+        if (ok && statusValue) {
+          ok = String(item.status || "").toLowerCase() === statusValue.toLowerCase();
+        }
+        return ok;
+      });
+    }
+
+    function renderInventory() {
+      const list = filteredInventory();
+      inventoryBody.innerHTML = "";
+
+      if (!list.length) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 8;
+        td.className = "muted";
+        td.textContent = "No products found.";
+        tr.appendChild(td);
+        inventoryBody.appendChild(tr);
+      } else {
+        list.forEach(item => {
+          const tr = document.createElement("tr");
+
+          const tdId = document.createElement("td");
+          tdId.textContent = item.id || "";
+          tr.appendChild(tdId);
+
+          const tdName = document.createElement("td");
+          tdName.textContent = item.name || "";
+          tr.appendChild(tdName);
+
+          const tdColor = document.createElement("td");
+          tdColor.textContent = item.color || "";
+          tr.appendChild(tdColor);
+
+          const tdSize = document.createElement("td");
+          tdSize.textContent = item.size || "";
+          tr.appendChild(tdSize);
+
+          const tdQty = document.createElement("td");
+          tdQty.textContent = item.qty != null ? item.qty : "";
+          tr.appendChild(tdQty);
+
+          const tdCost = document.createElement("td");
+          if (item.unitCost != null && !Number.isNaN(item.unitCost)) {
+            tdCost.textContent = Number(item.unitCost).toFixed(0);
+          } else {
+            tdCost.textContent = "";
+          }
+          tr.appendChild(tdCost);
+
+          const tdStatus = document.createElement("td");
+          const status = item.status || "Unknown";
+          const chip = document.createElement("span");
+          chip.className = "status-chip status-" + status;
+          const dot = document.createElement("span");
+          dot.className = "status-dot";
+          const label = document.createElement("span");
+          label.textContent = status;
+          chip.appendChild(dot);
+          chip.appendChild(label);
+          tdStatus.appendChild(chip);
+          tr.appendChild(tdStatus);
+
+          const tdCart = document.createElement("td");
+
+          const btnCart = document.createElement("button");
+          btnCart.type = "button";
+          btnCart.className = "btn btn-outline btn-small btn-icon";
+          btnCart.textContent = "+ Cart";
+          btnCart.disabled = !item.qty || item.qty <= 0;
+          btnCart.addEventListener("click", () => {
+            addToCart(item.id);
+          });
+          tdCart.appendChild(btnCart);
+
+          const btnEdit = document.createElement("button");
+          btnEdit.type = "button";
+          btnEdit.className = "btn btn-outline btn-small btn-icon";
+          btnEdit.style.marginLeft = "6px";
+          btnEdit.textContent = "Edit";
+          btnEdit.addEventListener("click", () => {
+            startEditProduct(item.id);
+          });
+          tdCart.appendChild(btnEdit);
+
+          const btnDelete = document.createElement("button");
+          btnDelete.type = "button";
+          btnDelete.className = "btn btn-outline btn-small btn-icon";
+          btnDelete.style.marginLeft = "6px";
+          btnDelete.textContent = "Remove";
+          btnDelete.addEventListener("click", () => {
+            handleDeleteProduct(item.id, item.name);
+          });
+          tdCart.appendChild(btnDelete);
+
+          tr.appendChild(tdCart);
+
+          inventoryBody.appendChild(tr);
+        });
+      }
+
+      inventoryCountEl.textContent = String(inventory.length || 0);
+      if (!inventory.length) {
+        inventoryStatusLabel.textContent = "No products";
+      } else {
+        inventoryStatusLabel.textContent = "Live • " + inventory.length + " products";
+      }
+    }
+
+    // ====== Cart logic ======
+    function addToCart(productId) {
+      clearMessages();
+      const item = inventory.find(p => String(p.id) === String(productId));
+      if (!item) {
+        showError("Inventory item not found: " + productId);
+        return;
+      }
+      if (!item.qty || item.qty <= 0) {
+        showError("Item out of stock: " + productId);
+        return;
+      }
+
+      const existing = cart.find(c => String(c.id) === String(productId));
+      if (existing) {
+        if (existing.qty >= item.qty) {
+          showError("Cannot add more. Only " + item.qty + " available in stock.");
+          return;
+        }
+        existing.qty = existing.qty + 1;
+      } else {
+        cart.push({
+          id: item.id,
+          name: item.name,
+          color: item.color,
+          size: item.size,
+          qty: 1,
+          maxQty: item.qty,
+          sellPrice: 0
+        });
+      }
+      renderCart();
+      showSuccess("Item added to cart: " + item.id);
+    }
+
+    function updateCartSummary() {
+      const totalItems = cart.length;
+      const totalQty = cart.reduce((sum, c) => sum + (c.qty || 0), 0);
+      cartItemsCountEl.textContent = String(totalItems);
+      cartQtyTotalEl.textContent = String(totalQty);
+    }
+
+    function updateCartProfitSummary() {
+      if (!cartTotalCostEl || !cartTotalSellEl || !cartTotalProfitEl) return;
+      let totalCost = 0;
+      let totalSell = 0;
+
+      cart.forEach((item) => {
+        const invItem = inventory.find(p => String(p.id) === String(item.id));
+        const unitCost = invItem
+          ? Number(invItem.unitCost || (invItem.costPrice || 0) + (invItem.otherExpenses || 0))
+          : 0;
+        const sell = Number(item.sellPrice || 0);
+        totalCost += unitCost * (item.qty || 0);
+        totalSell += sell * (item.qty || 0);
+      });
+
+      const profit = totalSell - totalCost;
+
+      cartTotalCostEl.textContent = totalCost.toFixed(0);
+      cartTotalSellEl.textContent = totalSell.toFixed(0);
+      cartTotalProfitEl.textContent = profit.toFixed(0);
+
+      cartTotalProfitEl.classList.remove("cart-profit-profit-positive", "cart-profit-profit-negative");
+      if (profit > 0.001) {
+        cartTotalProfitEl.classList.add("cart-profit-profit-positive");
+      } else if (profit < -0.001) {
+        cartTotalProfitEl.classList.add("cart-profit-profit-negative");
+      }
+    }
+
+    function syncCartWithInventory() {
+      cart.forEach(cartItem => {
+        const invItem = inventory.find(p => String(p.id) === String(cartItem.id));
+        if (invItem) {
+          cartItem.maxQty = invItem.qty;
+          if (cartItem.qty > invItem.qty) {
+            cartItem.qty = invItem.qty;
+          }
+        }
+      });
+    }
+
+    function renderCart() {
+      cartBody.innerHTML = "";
+      if (!cart.length) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 4;
+        td.className = "muted";
+        td.textContent = "Cart is empty.";
+        tr.appendChild(td);
+        cartBody.appendChild(tr);
+      } else {
+        cart.forEach((item, idx) => {
+          const tr = document.createElement("tr");
+
+          const tdItem = document.createElement("td");
+          const title = document.createElement("div");
+          title.textContent = item.name || "(no name)";
+          const subtitle = document.createElement("div");
+          subtitle.className = "muted";
+          subtitle.textContent =
+            (item.id ? item.id + " • " : "") +
+            (item.color || "") +
+            (item.color && item.size ? " • " : "") +
+            (item.size || "");
+          tdItem.appendChild(title);
+          tdItem.appendChild(subtitle);
+          tr.appendChild(tdItem);
+
+          const inventoryItem = inventory.find(p => String(p.id) === String(item.id));
+          const maxAvailable = inventoryItem ? inventoryItem.qty : (item.maxQty || 0);
+
+          const tdQty = document.createElement("td");
+          const minusBtn = document.createElement("button");
+          minusBtn.type = "button";
+          minusBtn.className = "btn btn-outline btn-small btn-icon";
+          minusBtn.textContent = "−";
+          minusBtn.addEventListener("click", () => {
+            if (item.qty > 1) {
+              item.qty = item.qty - 1;
+            } else {
+              cart.splice(idx, 1);
+            }
+            renderCart();
+          });
+
+          const qtySpan = document.createElement("span");
+          qtySpan.style.margin = "0 6px";
+          qtySpan.textContent = String(item.qty);
+
+          const plusBtn = document.createElement("button");
+          plusBtn.type = "button";
+          plusBtn.className = "btn btn-outline btn-small btn-icon";
+          plusBtn.textContent = "+";
+          if (item.qty >= maxAvailable) {
+            plusBtn.disabled = true;
+            plusBtn.title = "Cannot exceed available stock (" + maxAvailable + ")";
+          }
+          plusBtn.addEventListener("click", () => {
+            if (item.qty >= maxAvailable) {
+              showError("Cannot increase quantity. Only " + maxAvailable + " available in stock.");
+              return;
+            }
+            item.qty = item.qty + 1;
+            renderCart();
+          });
+
+          tdQty.appendChild(minusBtn);
+          tdQty.appendChild(qtySpan);
+          tdQty.appendChild(plusBtn);
+          tr.appendChild(tdQty);
+
+          const tdSell = document.createElement("td");
+          const sellInput = document.createElement("input");
+          sellInput.type = "number";
+          sellInput.min = "0";
+          sellInput.step = "0.01";
+          sellInput.value = item.sellPrice != null ? item.sellPrice : "";
+          sellInput.addEventListener("input", () => {
+            item.sellPrice = Number(sellInput.value || 0);
+            updateCartProfitSummary();
+          });
+          tdSell.appendChild(sellInput);
+          tr.appendChild(tdSell);
+
+          const tdRemove = document.createElement("td");
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "btn btn-outline btn-small";
+          removeBtn.textContent = "Remove";
+          removeBtn.addEventListener("click", () => {
+            cart.splice(idx, 1);
+            renderCart();
+          });
+          tdRemove.appendChild(removeBtn);
+          tr.appendChild(tdRemove);
+
+          cartBody.appendChild(tr);
+        });
+      }
+      updateCartSummary();
+      updateCartProfitSummary();
+    }
+
+    // ====== Orders filtering ======
+    function passesOrderFilter(order, termRaw, statusRaw) {
+      const term = termRaw ? termRaw.trim().toLowerCase() : "";
+      const statusVal = statusRaw ? statusRaw.trim().toLowerCase() : "";
+
+      // Status filter
+      if (statusVal) {
+        const st = (order.status || "").toLowerCase();
+        if (st !== statusVal) return false;
+      }
+
+      // Search term filter
+      if (!term) return true;
+
+      let haystack = "";
+      haystack += (order.orderId || order.id || "") + " ";
+      haystack += (order.customer || "") + " ";
+      haystack += (order.phone || "") + " ";
+      haystack += (order.address || "") + " ";
+      haystack += (order.note || "") + " ";
+      haystack += (order.trackingId || order.tracking || "") + " ";
+
+      if (Array.isArray(order.items)) {
+        order.items.forEach(it => {
+          haystack += (it.id || "") + " ";
+          haystack += (it.name || "") + " ";
+          haystack += (it.color || "") + " ";
+          haystack += (it.size || "") + " ";
+        });
+      }
+
+      haystack = haystack.toLowerCase();
+      return haystack.includes(term);
+    }
+
+    // ====== Order confirmation message builder (for modal button) ======
+    function buildOrderConfirmationMessageFromOrder(order) {
+      if (!order) return "";
+
+      const customer = order.customer || "Customer";
+      const phone = order.phone || "";
+      const address = order.address || "";
+      const note = order.note || "";
+      const tracking =
+        order.trackingId ||
+        order.tracking ||
+        order.orderId ||
+        order.id ||
+        "";
+
+      const items = Array.isArray(order.items) ? order.items : [];
+
+      const lines = [];
+
+      lines.push(`Dear ${customer},`);
+      lines.push("");
+      lines.push("Your order has been confirmed.");
+      lines.push("");
+      lines.push("Order details:");
+
+      if (items.length) {
+        items.forEach((it) => {
+          const name = it.name || "";
+          const color = it.color || "";
+          const size = it.size || "";
+          const pid = it.id || "";
+          const qty = it.qty != null ? it.qty : "";
+
+          const colorSize =
+            color && size ? `${color} / ${size}` :
+            color || size || "";
+
+          const detail = [
+            name,
+            colorSize ? `(${colorSize})` : "",
+            pid ? `[${pid}]` : ""
+          ].filter(Boolean).join(" ");
+
+          lines.push(`- ${detail} x ${qty}`);
+        });
+      } else {
+        lines.push("- (no item details available)");
+      }
+
+      lines.push("");
+      if (phone) {
+        lines.push(`Contact: ${phone}`);
+      }
+      lines.push(`Tracking ID: ${tracking || "will be shared soon."}`);
+      if (note) {
+        lines.push(`Note: ${note}`);
+      }
+      if (address) {
+        lines.push(`Address: ${address}`);
+      }
+      lines.push("");
+      lines.push("Thanks for choosing JANAB.");
+
+      return lines.join("\n");
+    }
+
+    // ====== Orders preview + helper for list item ======
+    function createOrderListItem(order, index) {
+      const li = document.createElement("li");
+      const statusRaw = (order.status || "new").toLowerCase();
+      li.className = "order-item order-status-" + statusRaw;
+      li.setAttribute("data-index", String(index));
+
+      const statusLabel = statusRaw.charAt(0).toUpperCase() + statusRaw.slice(1);
+
+      const idLine = document.createElement("div");
+      idLine.className = "order-id";
+      idLine.textContent = (order.orderId || "(no ID)") + " · " + statusLabel;
+
+      const tracking = order.trackingId || order.tracking || "";
+      if (tracking) {
+        const trackingSpan = document.createElement("span");
+        trackingSpan.className = "status-badge";
+        trackingSpan.textContent = tracking;
+        idLine.appendChild(trackingSpan);
+      }
+
+      li.appendChild(idLine);
+
+      const meta = document.createElement("div");
+      meta.className = "order-meta";
+      const dt = order.timestamp ? new Date(order.timestamp) : null;
+      const dateStr = dt ? dt.toLocaleString() : "";
+      meta.textContent =
+        (order.customer ? order.customer + " • " : "") +
+        (order.totalQty != null ? "Qty: " + order.totalQty + " • " : "") +
+        (order.totalItems != null ? "Items: " + order.totalItems + " • " : "") +
+        dateStr;
+      li.appendChild(meta);
+
+      if (order.note) {
+        const noteDiv = document.createElement("div");
+        noteDiv.className = "order-note";
+        noteDiv.textContent = "Note: " + order.note;
+        li.appendChild(noteDiv);
+      }
+
+      return li;
+    }
+
+    function renderOrders() {
+      ordersList.innerHTML = "";
+      const term = orderSearchInput ? orderSearchInput.value : "";
+      const statusVal = orderStatusFilter ? orderStatusFilter.value : "";
+
+      const filtered = [];
+      for (let i = 0; i < ordersPreview.length; i++) {
+        const order = ordersPreview[i];
+        if (passesOrderFilter(order, term, statusVal)) {
+          filtered.push({ order, index: i });
+        }
+      }
+
+      if (!filtered.length) {
+        const li = document.createElement("li");
+        li.className = "muted";
+        li.textContent = "No recent orders found.";
+        ordersList.appendChild(li);
+        return;
+      }
+
+      const maxPreview = Math.min(10, filtered.length);
+      for (let i = 0; i < maxPreview; i++) {
+        const { order, index } = filtered[i];
+        const li = createOrderListItem(order, index);
+        ordersList.appendChild(li);
+      }
+    }
+
+    function renderAllOrders() {
+      if (!allOrdersList) return;
+      allOrdersList.innerHTML = "";
+
+      const term = orderSearchInputAll ? orderSearchInputAll.value : "";
+      const statusVal = orderStatusFilterAll ? orderStatusFilterAll.value : "";
+
+      const filtered = [];
+      for (let i = 0; i < ordersPreview.length; i++) {
+        const order = ordersPreview[i];
+        if (passesOrderFilter(order, term, statusVal)) {
+          filtered.push({ order, index: i });
+        }
+      }
+
+      if (!filtered.length) {
+        const li = document.createElement("li");
+        li.className = "muted";
+        li.textContent = "No orders.";
+        allOrdersList.appendChild(li);
+        return;
+      }
+
+      filtered.forEach(({ order, index }) => {
+        const li = createOrderListItem(order, index);
+        allOrdersList.appendChild(li);
+      });
+    }
+
+    async function loadOrdersPreview() {
+      try {
+        // limit:0 => backend se saare orders
+        const res = await apiGet("getOrders", { limit: 0 });
+        if (res && Array.isArray(res.orders)) {
+          ordersPreview = res.orders;
+        } else if (Array.isArray(res)) {
+          ordersPreview = res;
+        } else {
+          ordersPreview = [];
+        }
+        renderOrders();
+        updateOrderStatusStats(ordersPreview);
+        updateGlobalProfitStats(ordersPreview);
+      } catch (error) {
+        console.error("getOrders error:", error);
+      }
+    }
+
+    async function openAllOrdersModal() {
+      clearMessages("Loading all orders…");
+      try {
+        const res = await apiGet("getOrders", { limit: 0 });
+        if (res && Array.isArray(res.orders)) {
+          ordersPreview = res.orders;
+        } else if (Array.isArray(res)) {
+          ordersPreview = res;
+        } else {
+          ordersPreview = [];
+        }
+        renderOrders();
+        updateOrderStatusStats(ordersPreview);
+        updateGlobalProfitStats(ordersPreview);
+      } catch (error) {
+        console.error("getOrders all error:", error);
+        showError(error.message || "Failed to load orders.");
+      }
+
+      if (orderSearchInputAll) orderSearchInputAll.value = "";
+      if (orderStatusFilterAll) orderStatusFilterAll.value = "";
+
+      renderAllOrders();
+      if (allOrdersModalOverlay) {
+        allOrdersModalOverlay.classList.add("active");
+        allOrdersModalOverlay.setAttribute("aria-hidden", "false");
+      }
+      clearMessages("Ready.");
+    }
+
+    function closeAllOrdersModal() {
+      if (!allOrdersModalOverlay) return;
+      allOrdersModalOverlay.classList.remove("active");
+      allOrdersModalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    // ====== Load inventory ======
+    async function loadInventory() {
+      clearMessages("Loading inventory…");
+      inventoryStatusLabel.textContent = "Loading…";
+
+      try {
+        const res = await apiGet("getInventory");
+        let inv = [];
+        if (res && Array.isArray(res.inventory)) {
+          inv = res.inventory;
+        } else if (Array.isArray(res)) {
+          inv = res;
+        } else {
+          inv = [];
+        }
+        inventory = inv.map(item => {
+          const costPrice = Number(item.costPrice || 0);
+          const otherExpenses = Number(item.otherExpenses || 0);
+          const unitCostRaw = item.unitCost != null ? Number(item.unitCost) : NaN;
+          const unitCost = !Number.isNaN(unitCostRaw)
+            ? unitCostRaw
+            : costPrice + otherExpenses;
+          const qtyVal = Number(item.qty || 0);
+          const statusVal =
+            item.status ||
+            (qtyVal <= 0 ? "Booked" : qtyVal <= 2 ? "Low" : "Available");
+
+          return {
+            id: item.id || "",
+            name: item.name || "",
+            color: item.color || "",
+            size: item.size || "",
+            qty: qtyVal,
+            status: statusVal,
+            costPrice,
+            otherExpenses,
+            unitCost
+          };
+        });
+        syncCartWithInventory();
+        renderInventory();
+        renderCart();
+        showSuccess("Inventory refreshed from Google Sheet.");
+      } catch (error) {
+        console.error("loadInventory error:", error);
+        showError(error.message || "Failed to load inventory.");
+        inventoryStatusLabel.textContent = "Error";
+      }
+    }
+
+    // ====== Inventory edit (modal) ======
+    function openInventoryModal(item) {
+      editingProductId = item.id;
+      invCodeInput.value = item.id || "";
+      invNameInput.value = item.name || "";
+      invColorInput.value = item.color || "";
+      invSizeInput.value = item.size || "";
+      invQtyInput.value = item.qty != null ? item.qty : "";
+      if (invCostPriceInput) invCostPriceInput.value =
+        item.costPrice != null ? item.costPrice : "";
+      if (invOtherExpensesInput) invOtherExpensesInput.value =
+        item.otherExpenses != null ? item.otherExpenses : "";
+      if (invUnitCostInput) {
+        const unitCost =
+          item.unitCost != null
+            ? item.unitCost
+            : (item.costPrice || 0) + (item.otherExpenses || 0);
+        invUnitCostInput.value = unitCost ? unitCost : "";
+      }
+      invModalInfo.textContent = "Editing item " + (item.id || "") + ". Update fields and click Save changes.";
+      inventoryModalOverlay.classList.add("active");
+      inventoryModalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeInventoryModal() {
+      editingProductId = null;
+      invCodeInput.value = "";
+      invNameInput.value = "";
+      invColorInput.value = "";
+      invSizeInput.value = "";
+      invQtyInput.value = "";
+      if (invCostPriceInput) invCostPriceInput.value = "";
+      if (invOtherExpensesInput) invOtherExpensesInput.value = "";
+      if (invUnitCostInput) invUnitCostInput.value = "";
+      inventoryModalOverlay.classList.remove("active");
+      inventoryModalOverlay.setAttribute("aria-hidden", "true");
+    }
+
+    function startEditProduct(productId) {
+      clearMessages();
+      const item = inventory.find(p => String(p.id) === String(productId));
+      if (!item) {
+        showError("Inventory item not found for edit: " + productId);
+        return;
+      }
+      openInventoryModal(item);
+    }
+
+    function updateInventoryModalUnitCost() {
+      if (!invUnitCostInput) return;
+      const cost = Number(invCostPriceInput && invCostPriceInput.value ? invCostPriceInput.value : 0);
+      const other = Number(invOtherExpensesInput && invOtherExpensesInput.value ? invOtherExpensesInput.value : 0);
+      const total = cost + other;
+      invUnitCostInput.value = total > 0 ? total.toFixed(0) : "";
+    }
+
+    async function handleSaveInventoryEdit() {
+      clearMessages();
+      if (!editingProductId) {
+        showError("No item selected to update.");
+        return;
+      }
+
+      const id = (invCodeInput.value || "").trim();
+      const name = (invNameInput.value || "").trim();
+      const color = (invColorInput.value || "").trim();
+      const size = (invSizeInput.value || "").trim();
+      const qty = Number(invQtyInput.value || 0);
+      const costPrice = Number(invCostPriceInput && invCostPriceInput.value ? invCostPriceInput.value : 0);
+      const otherExpenses = Number(invOtherExpensesInput && invOtherExpensesInput.value ? invOtherExpensesInput.value : 0);
+      const unitCost = costPrice + otherExpenses;
+
+      if (!id || !name || !color || !size || qty < 0 || isNaN(qty)) {
+        showError("ID, Name, Color, Size aur Qty (>=0) required hain.");
+        return;
+      }
+
+      inventoryModalSaveBtn.disabled = true;
+      inventoryModalSaveBtn.textContent = "Saving…";
+
+      try {
+        const payload = { id, name, color, size, qty, costPrice, otherExpenses, unitCost };
+        const res = await apiPost("updateProduct", payload);
+        if (res && res.success === false) {
+          throw new Error(res.message || "Server error in updateProduct.");
+        }
+        showSuccess((res && res.message) || "Inventory item updated.");
+        await loadInventory();
+        closeInventoryModal();
+      } catch (error) {
+        console.error("updateProduct error:", error);
+        showError(error.message || "Failed to update product.");
+      } finally {
+        inventoryModalSaveBtn.disabled = false;
+        inventoryModalSaveBtn.textContent = "Save changes";
+      }
+    }
+
+    // ====== Inventory delete ======
+    async function handleDeleteProduct(productId, productName) {
+      clearMessages();
+      const label = (productId || "") + (productName ? " – " + productName : "");
+      const ok = window.confirm(
+        "Are you sure you want to remove this item from inventory?\n\n" + label
+      );
+      if (!ok) return;
+
+      try {
+        const res = await apiPost("deleteProduct", { id: productId });
+        if (res && res.success === false) {
+          throw new Error(res.message || "Server error in deleteProduct.");
+        }
+        showSuccess((res && res.message) || "Product removed from inventory.");
+        await loadInventory();
+      } catch (error) {
+        console.error("deleteProduct error:", error);
+        showError(error.message || "Failed to remove product.");
+      }
+    }
+
+    // ====== Add product handler ======
+    function updateAddProductUnitCost() {
+      if (!pUnitCost) return;
+      const cost = Number(pCostPrice && pCostPrice.value ? pCostPrice.value : 0);
+      const other = Number(pOtherExpenses && pOtherExpenses.value ? pOtherExpenses.value : 0);
+      const total = cost + other;
+      pUnitCost.value = total > 0 ? total.toFixed(0) : "";
+    }
+
+    async function handleAddProduct() {
+      clearMessages();
+
+      const name = pName.value.trim();
+      const color = pColor.value.trim();
+      const size = pSize.value.trim();
+      const qty = Number(pQty.value || 0);
+      const code = pCode.value.trim();
+      const costPrice = Number(pCostPrice && pCostPrice.value ? pCostPrice.value : 0);
+      const otherExpenses = Number(pOtherExpenses && pOtherExpenses.value ? pOtherExpenses.value : 0);
+      const unitCost = costPrice + otherExpenses;
+
+      if (!name || !color || !size || !qty || qty <= 0) {
+        showError("Name, Color, Size aur Qty (>=1) zaroori hain.");
+        return;
+      }
+      if (!costPrice || costPrice <= 0) {
+        showError("Actual price per unit (costPrice) bhi zaroori hai.");
+        return;
+      }
+
+      addProductBtn.disabled = true;
+      addProductBtn.textContent = "Adding…";
+
+      try {
+        const payload = { name, color, size, qty, code, costPrice, otherExpenses, unitCost };
+        const res = await apiPost("addProduct", payload);
+
+        if (res && res.success === false) {
+          throw new Error(res.message || "Server error in addProduct.");
+        }
+
+        showSuccess(res && res.message ? res.message : "Product added.");
+
+        pName.value = "";
+        pColor.value = "";
+        pSize.value = "";
+        pQty.value = "";
+        pCode.value = "";
+        if (pCostPrice) pCostPrice.value = "";
+        if (pOtherExpenses) pOtherExpenses.value = "";
+        if (pUnitCost) pUnitCost.value = "";
+
+        await loadInventory();
+      } catch (error) {
+        console.error("addProduct error:", error);
+        showError(error.message || "Failed to add product.");
+      } finally {
+        addProductBtn.disabled = false;
+        addProductBtn.textContent = "+ Add product to inventory";
+      }
+    }
+
+    // ====== Place order handler ======
+    async function handlePlaceOrder() {
+      clearMessages();
+
+      if (!cart.length) {
+        showError("Cart khali hai. Pehle items add karein.");
+        return;
+      }
+
+      const customer = cName.value.trim();
+      const phone = cPhone.value.trim();
+      const address = cAddress.value.trim();
+      const note = cNote.value.trim();
+
+      if (!customer) {
+        showError("Customer name required.");
+        return;
+      }
+
+      const missingPrice = cart.some(c => !c.sellPrice || c.sellPrice <= 0);
+      if (missingPrice) {
+        showError("Har cart item ke liye selling price per unit add karein.");
+        return;
+      }
+
+      let totalCost = 0;
+      let totalSell = 0;
+      cart.forEach(c => {
+        const invItem = inventory.find(p => String(p.id) === String(c.id));
+        const unitCost = invItem
+          ? Number(invItem.unitCost || (invItem.costPrice || 0) + (invItem.otherExpenses || 0))
+          : 0;
+        totalCost += unitCost * c.qty;
+        totalSell += Number(c.sellPrice || 0) * c.qty;
+      });
+      const profit = totalSell - totalCost;
+
+      const payload = {
+        customer,
+        phone,
+        address,
+        note,
+        totalCost,
+        totalSell,
+        profit,
+        items: cart.map(c => ({
+          id: c.id,
+          qty: c.qty,
+          name: c.name,
+          color: c.color,
+          size: c.size,
+          sellPrice: Number(c.sellPrice || 0)
+        }))
+      };
+
+      placeOrderBtn.disabled = true;
+      placeOrderBtn.textContent = "Placing…";
+
+      try {
+        const res = await apiPost("placeOrder", payload);
+        if (res && res.success === false) {
+          throw new Error(res.message || "Server error in placeOrder.");
+        }
+
+        showSuccess(
+          (res && res.message) ||
+          ("Order placed. ID: " + (res && res.orderId ? res.orderId : "N/A"))
+        );
+
+        cart = [];
+        renderCart();
+        cName.value = "";
+        cPhone.value = "";
+        cAddress.value = "";
+        cNote.value = "";
+
+        await loadInventory();
+        await loadOrdersPreview();
+      } catch (error) {
+        console.error("placeOrder error:", error);
+        showError(error.message || "Failed to place order.");
+      } finally {
+        placeOrderBtn.disabled = false;
+        placeOrderBtn.textContent = "✅ Place order";
+      }
+    }
+
+    // ====== Order modal (view + edit) ======
+    function setOrderModalEditMode(on) {
+      orderModalEditMode = on;
+      const displays = orderModalOverlay.querySelectorAll(".modal-field-display");
+      const inputs = orderModalOverlay.querySelectorAll(".modal-field-input");
+      displays.forEach(el => {
+        el.style.display = on ? "none" : "inline";
+      });
+      inputs.forEach(el => {
+        el.style.display = on ? "block" : "none";
+      });
+      if (orderModalEditBtn) {
+        orderModalEditBtn.style.display = on ? "none" : "inline-flex";
+      }
+      if (orderModalSaveBtn) {
+        orderModalSaveBtn.style.display = on ? "inline-flex" : "none";
+      }
+    }
+
+    function openOrderModal(order, index) {
+      if (!orderModalOverlay) return;
+
+      activeOrderIndex = index;
+
+      modalOrderId.textContent = order.orderId || order.id || "N/A";
+      if (order.timestamp) {
+        const dt = new Date(order.timestamp);
+        modalOrderDate.textContent = dt.toLocaleString();
+      } else {
+        modalOrderDate.textContent = "N/A";
+      }
+
+      const customer = order.customer || "";
+      const phone = order.phone || "";
+      const address = order.address || "";
+      const note = order.note || "";
+      const tracking = order.trackingId || order.tracking || "";
+      const statusRaw = (order.status || "new").toLowerCase();
+      const statusLabel = statusRaw.charAt(0).toUpperCase() + statusRaw.slice(1);
+
+      modalOrderCustomerDisplay.textContent = customer || "-";
+      modalOrderCustomerInput.value = customer;
+
+      modalOrderPhoneDisplay.textContent = phone || "-";
+      modalOrderPhoneInput.value = phone;
+
+      modalOrderAddressDisplay.textContent = address || "-";
+      modalOrderAddressInput.value = address;
+
+      modalOrderNoteDisplay.textContent = note || "-";
+      modalOrderNoteInput.value = note;
+
+      modalOrderTrackingDisplay.textContent = tracking || "-";
+      modalOrderTrackingInput.value = tracking;
+
+      modalOrderStatusDisplay.textContent = statusLabel;
+      modalOrderStatusInput.value = statusRaw;
+
+      // Items
+      modalItemsBody.innerHTML = "";
+      const items = Array.isArray(order.items) ? order.items : [];
+
+      if (!items.length) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 5;
+        td.className = "muted";
+        td.textContent = "Items detail not available in preview.";
+        tr.appendChild(td);
+        modalItemsBody.appendChild(tr);
+      } else {
+        items.forEach(it => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${it.name || ""}</td>
+            <td>${it.color || ""}</td>
+            <td>${it.size || ""}</td>
+            <td>${it.id || ""}</td>
+            <td style="text-align:right;">${it.qty != null ? it.qty : ""}</td>
+          `;
+          modalItemsBody.appendChild(tr);
+        });
+      }
+
+      setOrderModalEditMode(false);
+      orderModalOverlay.classList.add("active");
+      orderModalOverlay.setAttribute("aria-hidden", "false");
+    }
+
+    function closeOrderModal() {
+      if (!orderModalOverlay) return;
+      orderModalOverlay.classList.remove("active");
+      orderModalOverlay.setAttribute("aria-hidden", "true");
+      activeOrderIndex = null;
+      setOrderModalEditMode(false);
+    }
+
+    async function handleOrderModalSave() {
+      clearMessages();
+      if (activeOrderIndex === null || activeOrderIndex < 0 || activeOrderIndex >= ordersPreview.length) {
+        showError("No order selected to update.");
+        return;
+      }
+
+      const order = ordersPreview[activeOrderIndex];
+      if (!order) {
+        showError("Order not found in preview.");
+        return;
+      }
+
+      const newCustomer = modalOrderCustomerInput.value.trim();
+      const newPhone = modalOrderPhoneInput.value.trim();
+      const newAddress = modalOrderAddressInput.value.trim();
+      const newNote = modalOrderNoteInput.value.trim();
+      const newTracking = modalOrderTrackingInput.value.trim();
+      const newStatus = (modalOrderStatusInput.value || "new").toLowerCase();
+
+      if (!newCustomer) {
+        showError("Customer name required for order update.");
+        return;
+      }
+
+      const oldStatus = (order.status || "new").toLowerCase();
+
+      const payload = {
+        orderId: order.orderId || order.id,
+        customer: newCustomer,
+        phone: newPhone,
+        address: newAddress,
+        note: newNote,
+        trackingId: newTracking,
+        status: newStatus,
+        items: Array.isArray(order.items) ? order.items : []
+      };
+
+      orderModalSaveBtn.disabled = true;
+      orderModalSaveBtn.textContent = "Saving…";
+
+      try {
+        const res = await apiPost("updateOrder", payload);
+        if (res && res.success === false) {
+          throw new Error(res.message || "Server error in updateOrder.");
+        }
+        showSuccess((res && res.message) || "Order updated.");
+
+        // Local preview update
+        order.customer = newCustomer;
+        order.phone = newPhone;
+        order.address = newAddress;
+        order.note = newNote;
+        order.trackingId = newTracking;
+        order.status = newStatus;
+
+        // Update modal display
+        modalOrderCustomerDisplay.textContent = newCustomer;
+        modalOrderPhoneDisplay.textContent = newPhone || "-";
+        modalOrderAddressDisplay.textContent = newAddress || "-";
+        modalOrderNoteDisplay.textContent = newNote || "-";
+        modalOrderTrackingDisplay.textContent = newTracking || "-";
+        const statusLabel = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+        modalOrderStatusDisplay.textContent = statusLabel;
+
+        renderOrders();
+        renderAllOrders();
+        updateOrderStatusStats(ordersPreview);
+        updateGlobalProfitStats(ordersPreview);
+        setOrderModalEditMode(false);
+
+        if (
+          (oldStatus !== "returned" && oldStatus !== "cancelled") &&
+          (newStatus === "returned" || newStatus === "cancelled")
+        ) {
+          await loadInventory();
+        }
+      } catch (error) {
+        console.error("updateOrder error:", error);
+        showError(error.message || "Failed to update order.");
+      } finally {
+        orderModalSaveBtn.disabled = false;
+        orderModalSaveBtn.textContent = "Save changes";
+      }
+    }
+
+    async function handleCopyConfirmationForActiveOrder() {
+      clearMessages();
+
+      if (
+        activeOrderIndex == null ||
+        activeOrderIndex < 0 ||
+        activeOrderIndex >= ordersPreview.length
+      ) {
+        showError("Open an order first.");
+        return;
+      }
+
+      const order = ordersPreview[activeOrderIndex];
+      if (!order) {
+        showError("Order not found.");
+        return;
+      }
+
+      const msg = buildOrderConfirmationMessageFromOrder(order);
+      if (!msg) {
+        showError("Unable to generate confirmation message.");
+        return;
+      }
+
+      let copied = false;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(msg);
+          copied = true;
+        } catch (err) {
+          console.warn("Clipboard copy error:", err);
+        }
+      }
+
+      if (copied) {
+        showSuccess("Confirmation message copied. Paste it in WhatsApp/SMS.");
+      } else {
+        showSuccess("Confirmation message ready. Copy it from popup.");
+        alert(msg);
+      }
+    }
+
+    function handleOrderClick(e) {
+      const li = e.target.closest(".order-item");
+      if (!li) return;
+      const idx = Number(li.getAttribute("data-index"));
+      if (Number.isNaN(idx)) return;
+      const order = ordersPreview[idx];
+      if (!order) return;
+      openOrderModal(order, idx);
+    }
+
+    // ====== Header Reset All & Live Sheet ======
+    async function handleResetAll() {
+      const ok = window.confirm("Reset all local data (cart, filters, forms)? Google Sheet ka data safe rahega.");
+      if (!ok) return;
+      try {
+        // Clear cart
+        cart = [];
+        renderCart();
+
+        // Clear filters
+        if (searchInput) searchInput.value = "";
+        if (statusFilter) statusFilter.value = "";
+
+        // Clear customer form
+        if (cName) cName.value = "";
+        if (cPhone) cPhone.value = "";
+        if (cAddress) cAddress.value = "";
+        if (cNote) cNote.value = "";
+
+        // Clear add-product form
+        if (pName) pName.value = "";
+        if (pColor) pColor.value = "";
+        if (pSize) pSize.value = "";
+        if (pQty) pQty.value = "";
+        if (pCode) pCode.value = "";
+        if (pCostPrice) pCostPrice.value = "";
+        if (pOtherExpenses) pOtherExpenses.value = "";
+        if (pUnitCost) pUnitCost.value = "";
+
+        // Reload from Sheet
+        await loadInventory();
+        await loadOrdersPreview();
+        showSuccess("Local dashboard state reset.");
+      } catch (e) {
+        console.error("Reset error:", e);
+        showError("Reset nahi ho saka. Please try again.");
+      }
+    }
+
+    function handleOpenLiveSheet() {
+      clearMessages("Live with Google Sheet.");
+      // TODO: yahan apni Google Sheet ka URL dalen:
+      const sheetUrl = "";
+      if (sheetUrl) {
+        window.open(sheetUrl, "_blank");
+      } else {
+        showSuccess("Panel already live hai Apps Script (BASE_URL) ke through. Sheet ka URL code me set karein.");
+      }
+    }
+
+    // ====== Login handling + Remember me ======
+    function handleLogin() {
+      if (!passwordInput) return;
+      const val = (passwordInput.value || "").trim();
+      if (val === "6654321") {
+        if (loginError) {
+          loginError.style.display = "none";
+          loginError.textContent = "";
+        }
+
+        try {
+          if (window.localStorage) {
+            if (rememberMeCheckbox && rememberMeCheckbox.checked) {
+              localStorage.setItem(REMEMBER_KEY, "1");
+            } else {
+              localStorage.removeItem(REMEMBER_KEY);
+            }
+          }
+        } catch (e) {
+          console.warn("Remember me store error:", e);
+        }
+
+        if (loginScreen) loginScreen.style.display = "none";
+        if (appPage) appPage.style.display = "";
+        initApp();
+      } else {
+        if (loginError) {
+          loginError.style.display = "block";
+          loginError.textContent = "Incorrect password.";
+        }
+      }
+    }
+
+    function autoLoginIfRemembered() {
+      try {
+        if (!window.localStorage) return;
+        const remembered = localStorage.getItem(REMEMBER_KEY);
+        if (remembered === "1") {
+          if (rememberMeCheckbox) rememberMeCheckbox.checked = true;
+          if (loginScreen) loginScreen.style.display = "none";
+          if (appPage) appPage.style.display = "";
+          initApp();
+        }
+      } catch (e) {
+        console.warn("Remember me not available:", e);
+      }
+    }
+
+    // ====== Events ======
+    if (loginBtn) {
+      loginBtn.addEventListener("click", handleLogin);
+    }
+    if (passwordInput) {
+      passwordInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") handleLogin();
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        renderInventory();
+        clearMessages();
+      });
+    }
+
+    if (statusFilter) {
+      statusFilter.addEventListener("change", () => {
+        renderInventory();
+        clearMessages();
+      });
+    }
+
+    if (resetFiltersBtn) {
+      resetFiltersBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        statusFilter.value = "";
+        renderInventory();
+        clearMessages();
+      });
+    }
+
+    if (clearCartBtn) {
+      clearCartBtn.addEventListener("click", () => {
+        cart = [];
+        renderCart();
+        clearMessages();
+      });
+    }
+
+    if (addProductBtn) addProductBtn.addEventListener("click", handleAddProduct);
+    if (placeOrderBtn) placeOrderBtn.addEventListener("click", handlePlaceOrder);
+
+    if (reloadOrdersLink) {
+      reloadOrdersLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        clearMessages("Reloading orders…");
+        loadOrdersPreview();
+      });
+    }
+
+    if (openAllOrdersBtn) {
+      openAllOrdersBtn.addEventListener("click", () => {
+        openAllOrdersModal();
+      });
+    }
+
+    if (ordersList) ordersList.addEventListener("click", handleOrderClick);
+    if (allOrdersList) allOrdersList.addEventListener("click", handleOrderClick);
+
+    // Orders search/filter events
+    if (orderSearchInput) {
+      orderSearchInput.addEventListener("input", () => {
+        renderOrders();
+        clearMessages();
+      });
+    }
+    if (orderStatusFilter) {
+      orderStatusFilter.addEventListener("change", () => {
+        renderOrders();
+        clearMessages();
+      });
+    }
+    if (orderSearchInputAll) {
+      orderSearchInputAll.addEventListener("input", () => {
+        renderAllOrders();
+      });
+    }
+    if (orderStatusFilterAll) {
+      orderStatusFilterAll.addEventListener("change", () => {
+        renderAllOrders();
+      });
+    }
+
+    // Inventory modal events
+    if (inventoryModalCloseBtn) {
+      inventoryModalCloseBtn.addEventListener("click", () => {
+        closeInventoryModal();
+      });
+    }
+    if (inventoryModalCancelBtn) {
+      inventoryModalCancelBtn.addEventListener("click", () => {
+        closeInventoryModal();
+      });
+    }
+    if (inventoryModalSaveBtn) {
+      inventoryModalSaveBtn.addEventListener("click", handleSaveInventoryEdit);
+    }
+    if (inventoryModalOverlay) {
+      inventoryModalOverlay.addEventListener("click", (e) => {
+        if (e.target === inventoryModalOverlay) {
+          closeInventoryModal();
+        }
+      });
+    }
+    if (invCostPriceInput) {
+      invCostPriceInput.addEventListener("input", updateInventoryModalUnitCost);
+    }
+    if (invOtherExpensesInput) {
+      invOtherExpensesInput.addEventListener("input", updateInventoryModalUnitCost);
+    }
+
+    // Order modal events
+    if (orderModalCloseBtn) {
+      orderModalCloseBtn.addEventListener("click", closeOrderModal);
+    }
+    if (orderModalCloseBtn2) {
+      orderModalCloseBtn2.addEventListener("click", closeOrderModal);
+    }
+    if (orderModalOverlay) {
+      orderModalOverlay.addEventListener("click", (e) => {
+        if (e.target === orderModalOverlay) {
+          closeOrderModal();
+        }
+      });
+    }
+    if (orderModalEditBtn) {
+      orderModalEditBtn.addEventListener("click", () => {
+        setOrderModalEditMode(true);
+      });
+    }
+    if (orderModalSaveBtn) {
+      orderModalSaveBtn.addEventListener("click", handleOrderModalSave);
+    }
+    if (orderModalCopyMsgBtn) {
+      orderModalCopyMsgBtn.addEventListener("click", handleCopyConfirmationForActiveOrder);
+    }
+
+    // All orders modal events
+    if (allOrdersModalCloseBtn) {
+      allOrdersModalCloseBtn.addEventListener("click", closeAllOrdersModal);
+    }
+    if (allOrdersModalCloseBtn2) {
+      allOrdersModalCloseBtn2.addEventListener("click", closeAllOrdersModal);
+    }
+    if (allOrdersModalOverlay) {
+      allOrdersModalOverlay.addEventListener("click", (e) => {
+        if (e.target === allOrdersModalOverlay) {
+          closeAllOrdersModal();
+        }
+      });
+    }
+
+    // Add product cost fields events
+    if (pCostPrice) pCostPrice.addEventListener("input", updateAddProductUnitCost);
+    if (pOtherExpenses) pOtherExpenses.addEventListener("input", updateAddProductUnitCost);
+
+    // Header buttons
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener("click", toggleDarkMode);
+    }
+    if (resetAllBtn) {
+      resetAllBtn.addEventListener("click", () => {
+        handleResetAll();
+      });
+    }
+    if (liveSheetBtn) {
+      liveSheetBtn.addEventListener("click", () => {
+        handleOpenLiveSheet();
+      });
+    }
+
+    // ====== Initial load (after login only) ======
+    async function initApp() {
+      if (appInitialized) return;
+      appInitialized = true;
+      try {
+        clearMessages("Loading…");
+        await loadInventory();
+        await loadOrdersPreview();
+        renderCart();
+        clearMessages("Ready.");
+      } catch (error) {
+        console.error("Init error:", error);
+        showError(error.message || "Initial load failed.");
+      }
+    }
+
+    // Apply theme + auto login if remember me saved
+    applyDarkModeFromStorage();
+    autoLoginIfRemembered();
+  </script>
+</body>
+</html>
