@@ -44,6 +44,78 @@
       width: 100%;
     }
 
+    body.dark-mode {
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
+      color: #f9fafb;
+    }
+
+    body.dark-mode .card {
+      background: #020617;
+      border-color: rgba(148, 163, 184, 0.4);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark-mode .top-header {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(55, 65, 81, 0.9);
+    }
+
+    body.dark-mode .login-card {
+      background: #020617;
+      border-color: rgba(55, 65, 81, 0.9);
+    }
+
+    body.dark-mode input[type="text"],
+    body.dark-mode input[type="number"],
+    body.dark-mode input[type="password"],
+    body.dark-mode textarea,
+    body.dark-mode select {
+      background: #020617;
+      border-color: #111827;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode input:focus,
+    body.dark-mode textarea:focus,
+    body.dark-mode select:focus {
+      background: #020617;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(248, 250, 252, 0.06);
+    }
+
+    body.dark-mode .table-wrapper {
+      background: #020617;
+      border-color: #111827;
+    }
+
+    body.dark-mode thead {
+      background: #111827;
+    }
+
+    body.dark-mode tr:nth-child(even) td {
+      background: rgba(17, 24, 39, 0.7);
+    }
+
+    body.dark-mode tr:hover td {
+      background: rgba(31, 41, 55, 0.9);
+    }
+
+    body.dark-mode .top-header-message {
+      background: #020617;
+      color: #e5e7eb;
+    }
+
+    body.dark-mode .btn-outline {
+      background: #020617;
+      border-color: #374151;
+      color: #f97316;
+    }
+
+    body.dark-mode .btn-ghost {
+      background: rgba(15, 23, 42, 0.7);
+      color: #e5e7eb;
+    }
+
     .page {
       max-width: 1400px;
       margin: 16px auto 60px;
@@ -151,8 +223,8 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 6px;
-      min-width: 260px;
+      gap: 8px;
+      min-width: 280px;
       max-width: 420px;
     }
 
@@ -207,6 +279,35 @@
       max-width: 520px;
     }
 
+    .top-left-status {
+      margin-top: 8px;
+    }
+
+    .top-left-status .order-stats {
+      justify-content: flex-start;
+    }
+
+    .profit-actions-row {
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .top-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .top-header-actions .btn {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+
     @media (max-width: 768px) {
       .top-title {
         font-size: 20px;
@@ -232,6 +333,13 @@
         align-items: stretch;
       }
       .order-stats {
+        justify-content: flex-start;
+      }
+      .profit-actions-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .top-header-actions {
         justify-content: flex-start;
       }
     }
@@ -323,6 +431,68 @@
       background: var(--danger-soft);
       color: var(--danger);
       border-color: rgba(220, 38, 38, 0.6);
+    }
+
+    /* GLOBAL PROFIT SUMMARY IN HEADER */
+    .profit-summary-header {
+      font-size: 11px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      background: rgba(249, 250, 251, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      align-items: flex-end;
+    }
+
+    .profit-main-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .profit-sub-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      color: var(--text-soft);
+    }
+
+    .profit-label {
+      font-weight: 500;
+    }
+
+    .profit-number {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .profit-number-main {
+      font-weight: 600;
+    }
+
+    .profit-separator {
+      color: #9ca3af;
+    }
+
+    .profit-summary-header.profit-positive .profit-number-main {
+      color: var(--success);
+    }
+
+    .profit-summary-header.profit-negative .profit-number-main {
+      color: var(--danger);
+    }
+
+    @media (max-width: 640px) {
+      .profit-summary-header {
+        align-items: flex-start;
+      }
+      .profit-main-line,
+      .profit-sub-line {
+        flex-wrap: wrap;
+      }
     }
 
     .grid {
@@ -533,6 +703,16 @@
       padding-inline: 10px;
     }
 
+    .btn-ghost {
+      border-color: transparent;
+      background: rgba(15, 23, 42, 0.03);
+      color: var(--text-soft);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(15, 23, 42, 0.06);
+    }
+
     .btn[disabled],
     .btn:disabled {
       opacity: 0.6;
@@ -673,6 +853,28 @@
       color: var(--text-soft);
       gap: 12px;
       flex-wrap: wrap;
+    }
+
+    .cart-profit-summary {
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--text-soft);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cart-profit-summary strong {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cart-profit-profit-positive {
+      color: var(--success);
+    }
+
+    .cart-profit-profit-negative {
+      color: var(--danger);
     }
 
     .flex-between {
@@ -819,6 +1021,11 @@
       border: 1px solid var(--border-soft);
     }
 
+    body.dark-mode .modal {
+      background: #020617;
+      border-color: #111827;
+    }
+
     .modal-header {
       padding: 12px 16px;
       border-bottom: 1px solid var(--border-soft);
@@ -882,6 +1089,11 @@
       margin-top: 4px;
     }
 
+    body.dark-mode .modal-items-wrapper {
+      background: #020617;
+      border-color: #111827;
+    }
+
     .modal-items-wrapper table {
       min-width: 0;
       font-size: 13px;
@@ -902,10 +1114,20 @@
       background: #f9fafb;
     }
 
+    body.dark-mode .modal-field-input {
+      background: #020617;
+      border-color: #111827;
+      color: #e5e7eb;
+    }
+
     .modal-field-input:focus {
       border-color: var(--accent);
       outline: none;
       background: #ffffff;
+    }
+
+    body.dark-mode .modal-field-input:focus {
+      background: #020617;
     }
 
     .modal-field-input-textarea {
@@ -973,31 +1195,67 @@
           <div class="top-subtitle">
             JANAB Clothing back-office panel. Google Sheet se directly connected inventory + orders.
           </div>
+          <!-- Status pills under subtitle -->
+          <div class="top-left-status">
+            <div class="order-stats">
+              <div class="order-stat-chip order-stat-new">
+                <span class="order-stat-label">New</span>
+                <span class="order-stat-value" id="statNew">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-ready">
+                <span class="order-stat-label">Ready</span>
+                <span class="order-stat-value" id="statReady">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-delivered">
+                <span class="order-stat-label">Delivered</span>
+                <span class="order-stat-value" id="statDelivered">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-returned">
+                <span class="order-stat-label">Returned</span>
+                <span class="order-stat-value" id="statReturned">0</span>
+              </div>
+              <div class="order-stat-chip order-stat-cancelled">
+                <span class="order-stat-label">Cancelled</span>
+                <span class="order-stat-value" id="statCancelled">0</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
       <div class="top-header-right">
-        <div class="order-stats">
-          <div class="order-stat-chip order-stat-new">
-            <span class="order-stat-label">New</span>
-            <span class="order-stat-value" id="statNew">0</span>
+        <div class="profit-actions-row">
+          <!-- GLOBAL PROFIT SUMMARY -->
+          <div id="profitSummaryRoot" class="profit-summary-header">
+            <div class="profit-main-line">
+              <span class="profit-label">Overall profit</span>
+              <span id="globalProfitPercent" class="profit-number profit-number-main">0%</span>
+              <span class="profit-separator">•</span>
+              <span id="globalProfitAmount" class="profit-number profit-number-main">Rs 0</span>
+            </div>
+            <div class="profit-sub-line">
+              <span class="profit-label">Cost base</span>
+              <span id="globalTotalCost" class="profit-number">Rs 0</span>
+              <span class="profit-separator">•</span>
+              <span class="profit-label">Total sell</span>
+              <span id="globalTotalSell" class="profit-number">Rs 0</span>
+            </div>
           </div>
-          <div class="order-stat-chip order-stat-ready">
-            <span class="order-stat-label">Ready</span>
-            <span class="order-stat-value" id="statReady">0</span>
-          </div>
-          <div class="order-stat-chip order-stat-delivered">
-            <span class="order-stat-label">Delivered</span>
-            <span class="order-stat-value" id="statDelivered">0</span>
-          </div>
-          <div class="order-stat-chip order-stat-returned">
-            <span class="order-stat-label">Returned</span>
-            <span class="order-stat-value" id="statReturned">0</span>
-          </div>
-          <div class="order-stat-chip order-stat-cancelled">
-            <span class="order-stat-label">Cancelled</span>
-            <span class="order-stat-value" id="statCancelled">0</span>
+
+          <!-- Header action buttons -->
+          <div class="top-header-actions">
+            <button type="button" id="darkModeToggle" class="btn btn-small btn-ghost">
+              🌙 Dark mode
+            </button>
+            <button type="button" id="resetAllBtn" class="btn btn-small btn-outline">
+              Reset all data
+            </button>
+            <button type="button" id="liveSheetBtn" class="btn btn-small btn-primary">
+              Live with Google Sheet
+            </button>
           </div>
         </div>
+
         <div id="globalMessageBar" class="top-header-message top-header-message--info">
           <span id="globalMessageText">Ready.</span>
         </div>
@@ -1051,6 +1309,7 @@
                 <th>Color</th>
                 <th>Size</th>
                 <th>Qty</th>
+                <th>Cost / unit</th>
                 <th>Status</th>
                 <th>Cart / Edit</th>
               </tr>
@@ -1109,7 +1368,20 @@
             <input type="number" id="pQty" placeholder="0" min="1" />
           </div>
         </div>
+
         <div class="row">
+          <div class="field">
+            <label for="pCostPrice">Actual price per unit</label>
+            <input type="number" id="pCostPrice" placeholder="Purchase price" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="pOtherExpenses">Other expenses per unit</label>
+            <input type="number" id="pOtherExpenses" placeholder="Packing / shipping…" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="pUnitCost">Total cost per unit</label>
+            <input type="number" id="pUnitCost" placeholder="Auto" readonly />
+          </div>
           <div class="field">
             <label for="pCode">Custom Code (optional)</label>
             <input type="text" id="pCode" placeholder="Leave blank for auto P-0001, P-0002…" />
@@ -1144,6 +1416,7 @@
               <tr>
                 <th>Item</th>
                 <th>Qty</th>
+                <th>Selling / unit</th>
                 <th></th>
               </tr>
             </thead>
@@ -1163,6 +1436,12 @@
           <button type="button" id="clearCartBtn" class="btn btn-outline btn-small">
             Clear cart
           </button>
+        </div>
+
+        <div class="cart-profit-summary">
+          <span>Cost: <strong id="cartTotalCost">0</strong></span>
+          <span>Sell: <strong id="cartTotalSell">0</strong></span>
+          <span>Profit/Loss: <strong id="cartTotalProfit">0</strong></span>
         </div>
 
         <hr style="margin: 24px 0; border: none; border-top: 1px dashed #e5e7eb;" />
@@ -1275,6 +1554,20 @@
           <div class="field" style="max-width: 120px;">
             <label for="invQty">Qty</label>
             <input type="number" id="invQty" min="0" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="field">
+            <label for="invCostPrice">Actual price / unit</label>
+            <input type="number" id="invCostPrice" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="invOtherExpenses">Other expenses / unit</label>
+            <input type="number" id="invOtherExpenses" min="0" step="0.01" />
+          </div>
+          <div class="field">
+            <label for="invUnitCost">Total cost / unit</label>
+            <input type="number" id="invUnitCost" readonly />
           </div>
         </div>
         <div class="muted" id="invModalInfo">
@@ -1453,7 +1746,7 @@
 
   <script>
     // ====== CONFIG: your Apps Script Web App URL ======
-    const BASE_URL = "https://script.google.com/macros/s/AKfycbxhL4JLzUhsw9rAay9Ots0RiUlAFoI8WGf1P6hH2ceyDmvU4Ap69o5EPF0J81zm_3TIQg/exec"; // <- yahan apna script URL lagao
+    const BASE_URL = "https://script.google.com/macros/s/AKfycbxhL4JLzUhsw9rAay9Ots0RiUlAFoI8WGf1P6hH2ceyDmvU4Ap69o5EPF0J81zm_3TIQg/exec"; // <- apna script URL
 
     // ====== API helpers ======
     async function apiGet(action, params = {}) {
@@ -1536,6 +1829,7 @@
     const loginError = document.getElementById("loginError");
     const rememberMeCheckbox = document.getElementById("rememberMe");
     const REMEMBER_KEY = "JANAB_PANEL_REMEMBER";
+    const DARK_MODE_KEY = "JANAB_PANEL_DARK_MODE";
 
     // Inventory / cart / orders
     const inventoryBody = document.getElementById("inventoryBody");
@@ -1551,6 +1845,10 @@
     const cartQtyTotalEl = document.getElementById("cartQtyTotal");
     const clearCartBtn = document.getElementById("clearCartBtn");
 
+    const cartTotalCostEl = document.getElementById("cartTotalCost");
+    const cartTotalSellEl = document.getElementById("cartTotalSell");
+    const cartTotalProfitEl = document.getElementById("cartTotalProfit");
+
     const cName = document.getElementById("cName");
     const cPhone = document.getElementById("cPhone");
     const cAddress = document.getElementById("cAddress");
@@ -1562,6 +1860,9 @@
     const pSize = document.getElementById("pSize");
     const pQty = document.getElementById("pQty");
     const pCode = document.getElementById("pCode");
+    const pCostPrice = document.getElementById("pCostPrice");
+    const pOtherExpenses = document.getElementById("pOtherExpenses");
+    const pUnitCost = document.getElementById("pUnitCost");
     const addProductBtn = document.getElementById("addProductBtn");
 
     const ordersList = document.getElementById("ordersList");
@@ -1583,6 +1884,18 @@
     const statReturnedEl = document.getElementById("statReturned");
     const statCancelledEl = document.getElementById("statCancelled");
 
+    // Global profit header refs
+    const profitSummaryRoot = document.getElementById("profitSummaryRoot");
+    const globalProfitPercentEl = document.getElementById("globalProfitPercent");
+    const globalProfitAmountEl = document.getElementById("globalProfitAmount");
+    const globalTotalCostEl = document.getElementById("globalTotalCost");
+    const globalTotalSellEl = document.getElementById("globalTotalSell");
+
+    // Header action buttons
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    const resetAllBtn = document.getElementById("resetAllBtn");
+    const liveSheetBtn = document.getElementById("liveSheetBtn");
+
     // Inventory modal refs
     const inventoryModalOverlay = document.getElementById("inventoryModalOverlay");
     const inventoryModalCloseBtn = document.getElementById("inventoryModalCloseBtn");
@@ -1593,6 +1906,9 @@
     const invColorInput = document.getElementById("invColor");
     const invSizeInput = document.getElementById("invSize");
     const invQtyInput = document.getElementById("invQty");
+    const invCostPriceInput = document.getElementById("invCostPrice");
+    const invOtherExpensesInput = document.getElementById("invOtherExpenses");
+    const invUnitCostInput = document.getElementById("invUnitCost");
     const invModalInfo = document.getElementById("invModalInfo");
 
     // Order modal refs
@@ -1660,6 +1976,40 @@
       setGlobalMessage("info", infoMessage || "Ready.");
     }
 
+    // ====== Dark mode helpers ======
+    function applyDarkModeFromStorage() {
+      try {
+        if (!window.localStorage) return;
+        const saved = localStorage.getItem(DARK_MODE_KEY);
+        if (saved === "1") {
+          document.body.classList.add("dark-mode");
+          if (darkModeToggle) {
+            darkModeToggle.textContent = "☀️ Light mode";
+          }
+        }
+      } catch (e) {
+        console.warn("Dark mode storage error:", e);
+      }
+    }
+
+    function toggleDarkMode() {
+      const isDark = document.body.classList.toggle("dark-mode");
+      try {
+        if (window.localStorage) {
+          if (isDark) {
+            localStorage.setItem(DARK_MODE_KEY, "1");
+          } else {
+            localStorage.removeItem(DARK_MODE_KEY);
+          }
+        }
+      } catch (e) {
+        console.warn("Dark mode save error:", e);
+      }
+      if (darkModeToggle) {
+        darkModeToggle.textContent = isDark ? "☀️ Light mode" : "🌙 Dark mode";
+      }
+    }
+
     // ====== Header order stats ======
     function updateOrderStatusStats(orders) {
       if (!Array.isArray(orders)) orders = [];
@@ -1679,6 +2029,81 @@
       if (statDeliveredEl) statDeliveredEl.textContent = String(cDelivered);
       if (statReturnedEl) statReturnedEl.textContent = String(cReturned);
       if (statCancelledEl) statCancelledEl.textContent = String(cCancelled);
+    }
+
+    // ====== GLOBAL PROFIT STATS (ALL ORDERS) ======
+    function updateGlobalProfitStats(orders) {
+      if (
+        !globalProfitPercentEl ||
+        !globalProfitAmountEl ||
+        !globalTotalCostEl ||
+        !globalTotalSellEl
+      ) return;
+
+      if (!Array.isArray(orders)) orders = [];
+
+      let totalCost = 0;
+      let totalSell = 0;
+      let totalProfit = 0;
+
+      orders.forEach((o) => {
+        // If backend already send totals per order:
+        const hasTotals =
+          o &&
+          (o.totalCost != null ||
+           o.totalSell != null ||
+           o.profit != null);
+
+        if (hasTotals) {
+          const oCost = o.totalCost != null && !Number.isNaN(Number(o.totalCost))
+            ? Number(o.totalCost) : 0;
+          const oSell = o.totalSell != null && !Number.isNaN(Number(o.totalSell))
+            ? Number(o.totalSell) : 0;
+          const oProfit = o.profit != null && !Number.isNaN(Number(o.profit))
+            ? Number(o.profit)
+            : (oSell - oCost);
+
+          totalCost += oCost;
+          totalSell += oSell;
+          totalProfit += oProfit;
+        } else if (Array.isArray(o.items)) {
+          // Fallback: calculate from items + inventory unit cost / sellPrice
+          o.items.forEach((it) => {
+            const qty = Number(it.qty || 0);
+            if (!qty) return;
+
+            const invItem = inventory.find(p => String(p.id) === String(it.id));
+            const unitCost = invItem
+              ? Number(
+                  invItem.unitCost ||
+                  (invItem.costPrice || 0) + (invItem.otherExpenses || 0)
+                )
+              : 0;
+            const sellUnit = Number(it.sellPrice || 0);
+
+            totalCost += unitCost * qty;
+            totalSell += sellUnit * qty;
+            totalProfit += (sellUnit - unitCost) * qty;
+          });
+        }
+      });
+
+      const percent = totalCost > 0 ? (totalProfit / totalCost) * 100 : 0;
+
+      globalProfitPercentEl.textContent =
+        totalCost > 0 ? percent.toFixed(1) + "%" : "0%";
+      globalProfitAmountEl.textContent = "Rs " + totalProfit.toFixed(0);
+      globalTotalCostEl.textContent = "Rs " + totalCost.toFixed(0);
+      globalTotalSellEl.textContent = "Rs " + totalSell.toFixed(0);
+
+      if (profitSummaryRoot) {
+        profitSummaryRoot.classList.remove("profit-positive", "profit-negative");
+        if (totalProfit > 0.01) {
+          profitSummaryRoot.classList.add("profit-positive");
+        } else if (totalProfit < -0.01) {
+          profitSummaryRoot.classList.add("profit-negative");
+        }
+      }
     }
 
     // ====== Inventory rendering ======
@@ -1707,7 +2132,7 @@
       if (!list.length) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
-        td.colSpan = 7;
+        td.colSpan = 8;
         td.className = "muted";
         td.textContent = "No products found.";
         tr.appendChild(td);
@@ -1735,6 +2160,14 @@
           const tdQty = document.createElement("td");
           tdQty.textContent = item.qty != null ? item.qty : "";
           tr.appendChild(tdQty);
+
+          const tdCost = document.createElement("td");
+          if (item.unitCost != null && !Number.isNaN(item.unitCost)) {
+            tdCost.textContent = Number(item.unitCost).toFixed(0);
+          } else {
+            tdCost.textContent = "";
+          }
+          tr.appendChild(tdCost);
 
           const tdStatus = document.createElement("td");
           const status = item.status || "Unknown";
@@ -1822,7 +2255,8 @@
           color: item.color,
           size: item.size,
           qty: 1,
-          maxQty: item.qty
+          maxQty: item.qty,
+          sellPrice: 0
         });
       }
       renderCart();
@@ -1834,6 +2268,35 @@
       const totalQty = cart.reduce((sum, c) => sum + (c.qty || 0), 0);
       cartItemsCountEl.textContent = String(totalItems);
       cartQtyTotalEl.textContent = String(totalQty);
+    }
+
+    function updateCartProfitSummary() {
+      if (!cartTotalCostEl || !cartTotalSellEl || !cartTotalProfitEl) return;
+      let totalCost = 0;
+      let totalSell = 0;
+
+      cart.forEach((item) => {
+        const invItem = inventory.find(p => String(p.id) === String(item.id));
+        const unitCost = invItem
+          ? Number(invItem.unitCost || (invItem.costPrice || 0) + (invItem.otherExpenses || 0))
+          : 0;
+        const sell = Number(item.sellPrice || 0);
+        totalCost += unitCost * (item.qty || 0);
+        totalSell += sell * (item.qty || 0);
+      });
+
+      const profit = totalSell - totalCost;
+
+      cartTotalCostEl.textContent = totalCost.toFixed(0);
+      cartTotalSellEl.textContent = totalSell.toFixed(0);
+      cartTotalProfitEl.textContent = profit.toFixed(0);
+
+      cartTotalProfitEl.classList.remove("cart-profit-profit-positive", "cart-profit-profit-negative");
+      if (profit > 0.001) {
+        cartTotalProfitEl.classList.add("cart-profit-profit-positive");
+      } else if (profit < -0.001) {
+        cartTotalProfitEl.classList.add("cart-profit-profit-negative");
+      }
     }
 
     function syncCartWithInventory() {
@@ -1853,7 +2316,7 @@
       if (!cart.length) {
         const tr = document.createElement("tr");
         const td = document.createElement("td");
-        td.colSpan = 3;
+        td.colSpan = 4;
         td.className = "muted";
         td.textContent = "Cart is empty.";
         tr.appendChild(td);
@@ -1919,6 +2382,19 @@
           tdQty.appendChild(plusBtn);
           tr.appendChild(tdQty);
 
+          const tdSell = document.createElement("td");
+          const sellInput = document.createElement("input");
+          sellInput.type = "number";
+          sellInput.min = "0";
+          sellInput.step = "0.01";
+          sellInput.value = item.sellPrice != null ? item.sellPrice : "";
+          sellInput.addEventListener("input", () => {
+            item.sellPrice = Number(sellInput.value || 0);
+            updateCartProfitSummary();
+          });
+          tdSell.appendChild(sellInput);
+          tr.appendChild(tdSell);
+
           const tdRemove = document.createElement("td");
           const removeBtn = document.createElement("button");
           removeBtn.type = "button";
@@ -1935,6 +2411,7 @@
         });
       }
       updateCartSummary();
+      updateCartProfitSummary();
     }
 
     // ====== Orders filtering ======
@@ -2142,7 +2619,7 @@
 
     async function loadOrdersPreview() {
       try {
-        // limit:0 => backend se saare orders (getOrders me slice nahi hoga)
+        // limit:0 => backend se saare orders
         const res = await apiGet("getOrders", { limit: 0 });
         if (res && Array.isArray(res.orders)) {
           ordersPreview = res.orders;
@@ -2153,6 +2630,7 @@
         }
         renderOrders();
         updateOrderStatusStats(ordersPreview);
+        updateGlobalProfitStats(ordersPreview);
       } catch (error) {
         console.error("getOrders error:", error);
       }
@@ -2171,6 +2649,7 @@
         }
         renderOrders();
         updateOrderStatusStats(ordersPreview);
+        updateGlobalProfitStats(ordersPreview);
       } catch (error) {
         console.error("getOrders all error:", error);
         showError(error.message || "Failed to load orders.");
@@ -2208,18 +2687,30 @@
         } else {
           inv = [];
         }
-        inventory = inv.map(item => ({
-          id: item.id || "",
-          name: item.name || "",
-          color: item.color || "",
-          size: item.size || "",
-          qty: Number(item.qty || 0),
-          status: item.status || (Number(item.qty || 0) <= 0
-            ? "Booked"
-            : Number(item.qty || 0) <= 2
-            ? "Low"
-            : "Available")
-        }));
+        inventory = inv.map(item => {
+          const costPrice = Number(item.costPrice || 0);
+          const otherExpenses = Number(item.otherExpenses || 0);
+          const unitCostRaw = item.unitCost != null ? Number(item.unitCost) : NaN;
+          const unitCost = !Number.isNaN(unitCostRaw)
+            ? unitCostRaw
+            : costPrice + otherExpenses;
+          const qtyVal = Number(item.qty || 0);
+          const statusVal =
+            item.status ||
+            (qtyVal <= 0 ? "Booked" : qtyVal <= 2 ? "Low" : "Available");
+
+          return {
+            id: item.id || "",
+            name: item.name || "",
+            color: item.color || "",
+            size: item.size || "",
+            qty: qtyVal,
+            status: statusVal,
+            costPrice,
+            otherExpenses,
+            unitCost
+          };
+        });
         syncCartWithInventory();
         renderInventory();
         renderCart();
@@ -2239,6 +2730,17 @@
       invColorInput.value = item.color || "";
       invSizeInput.value = item.size || "";
       invQtyInput.value = item.qty != null ? item.qty : "";
+      if (invCostPriceInput) invCostPriceInput.value =
+        item.costPrice != null ? item.costPrice : "";
+      if (invOtherExpensesInput) invOtherExpensesInput.value =
+        item.otherExpenses != null ? item.otherExpenses : "";
+      if (invUnitCostInput) {
+        const unitCost =
+          item.unitCost != null
+            ? item.unitCost
+            : (item.costPrice || 0) + (item.otherExpenses || 0);
+        invUnitCostInput.value = unitCost ? unitCost : "";
+      }
       invModalInfo.textContent = "Editing item " + (item.id || "") + ". Update fields and click Save changes.";
       inventoryModalOverlay.classList.add("active");
       inventoryModalOverlay.setAttribute("aria-hidden", "false");
@@ -2251,6 +2753,9 @@
       invColorInput.value = "";
       invSizeInput.value = "";
       invQtyInput.value = "";
+      if (invCostPriceInput) invCostPriceInput.value = "";
+      if (invOtherExpensesInput) invOtherExpensesInput.value = "";
+      if (invUnitCostInput) invUnitCostInput.value = "";
       inventoryModalOverlay.classList.remove("active");
       inventoryModalOverlay.setAttribute("aria-hidden", "true");
     }
@@ -2265,6 +2770,14 @@
       openInventoryModal(item);
     }
 
+    function updateInventoryModalUnitCost() {
+      if (!invUnitCostInput) return;
+      const cost = Number(invCostPriceInput && invCostPriceInput.value ? invCostPriceInput.value : 0);
+      const other = Number(invOtherExpensesInput && invOtherExpensesInput.value ? invOtherExpensesInput.value : 0);
+      const total = cost + other;
+      invUnitCostInput.value = total > 0 ? total.toFixed(0) : "";
+    }
+
     async function handleSaveInventoryEdit() {
       clearMessages();
       if (!editingProductId) {
@@ -2277,6 +2790,9 @@
       const color = (invColorInput.value || "").trim();
       const size = (invSizeInput.value || "").trim();
       const qty = Number(invQtyInput.value || 0);
+      const costPrice = Number(invCostPriceInput && invCostPriceInput.value ? invCostPriceInput.value : 0);
+      const otherExpenses = Number(invOtherExpensesInput && invOtherExpensesInput.value ? invOtherExpensesInput.value : 0);
+      const unitCost = costPrice + otherExpenses;
 
       if (!id || !name || !color || !size || qty < 0 || isNaN(qty)) {
         showError("ID, Name, Color, Size aur Qty (>=0) required hain.");
@@ -2287,7 +2803,7 @@
       inventoryModalSaveBtn.textContent = "Saving…";
 
       try {
-        const payload = { id, name, color, size, qty };
+        const payload = { id, name, color, size, qty, costPrice, otherExpenses, unitCost };
         const res = await apiPost("updateProduct", payload);
         if (res && res.success === false) {
           throw new Error(res.message || "Server error in updateProduct.");
@@ -2327,6 +2843,14 @@
     }
 
     // ====== Add product handler ======
+    function updateAddProductUnitCost() {
+      if (!pUnitCost) return;
+      const cost = Number(pCostPrice && pCostPrice.value ? pCostPrice.value : 0);
+      const other = Number(pOtherExpenses && pOtherExpenses.value ? pOtherExpenses.value : 0);
+      const total = cost + other;
+      pUnitCost.value = total > 0 ? total.toFixed(0) : "";
+    }
+
     async function handleAddProduct() {
       clearMessages();
 
@@ -2335,9 +2859,16 @@
       const size = pSize.value.trim();
       const qty = Number(pQty.value || 0);
       const code = pCode.value.trim();
+      const costPrice = Number(pCostPrice && pCostPrice.value ? pCostPrice.value : 0);
+      const otherExpenses = Number(pOtherExpenses && pOtherExpenses.value ? pOtherExpenses.value : 0);
+      const unitCost = costPrice + otherExpenses;
 
       if (!name || !color || !size || !qty || qty <= 0) {
         showError("Name, Color, Size aur Qty (>=1) zaroori hain.");
+        return;
+      }
+      if (!costPrice || costPrice <= 0) {
+        showError("Actual price per unit (costPrice) bhi zaroori hai.");
         return;
       }
 
@@ -2345,7 +2876,7 @@
       addProductBtn.textContent = "Adding…";
 
       try {
-        const payload = { name, color, size, qty, code };
+        const payload = { name, color, size, qty, code, costPrice, otherExpenses, unitCost };
         const res = await apiPost("addProduct", payload);
 
         if (res && res.success === false) {
@@ -2359,6 +2890,9 @@
         pSize.value = "";
         pQty.value = "";
         pCode.value = "";
+        if (pCostPrice) pCostPrice.value = "";
+        if (pOtherExpenses) pOtherExpenses.value = "";
+        if (pUnitCost) pUnitCost.value = "";
 
         await loadInventory();
       } catch (error) {
@@ -2389,17 +2923,39 @@
         return;
       }
 
+      const missingPrice = cart.some(c => !c.sellPrice || c.sellPrice <= 0);
+      if (missingPrice) {
+        showError("Har cart item ke liye selling price per unit add karein.");
+        return;
+      }
+
+      let totalCost = 0;
+      let totalSell = 0;
+      cart.forEach(c => {
+        const invItem = inventory.find(p => String(p.id) === String(c.id));
+        const unitCost = invItem
+          ? Number(invItem.unitCost || (invItem.costPrice || 0) + (invItem.otherExpenses || 0))
+          : 0;
+        totalCost += unitCost * c.qty;
+        totalSell += Number(c.sellPrice || 0) * c.qty;
+      });
+      const profit = totalSell - totalCost;
+
       const payload = {
         customer,
         phone,
         address,
         note,
+        totalCost,
+        totalSell,
+        profit,
         items: cart.map(c => ({
           id: c.id,
           qty: c.qty,
           name: c.name,
           color: c.color,
-          size: c.size
+          size: c.size,
+          sellPrice: Number(c.sellPrice || 0)
         }))
       };
 
@@ -2600,9 +3156,9 @@
         renderOrders();
         renderAllOrders();
         updateOrderStatusStats(ordersPreview);
+        updateGlobalProfitStats(ordersPreview);
         setOrderModalEditMode(false);
 
-        // Agar status pehli dafa returned/cancelled ho raha ho to inventory reload karo
         if (
           (oldStatus !== "returned" && oldStatus !== "cancelled") &&
           (newStatus === "returned" || newStatus === "cancelled")
@@ -2670,6 +3226,56 @@
       openOrderModal(order, idx);
     }
 
+    // ====== Header Reset All & Live Sheet ======
+    async function handleResetAll() {
+      const ok = window.confirm("Reset all local data (cart, filters, forms)? Google Sheet ka data safe rahega.");
+      if (!ok) return;
+      try {
+        // Clear cart
+        cart = [];
+        renderCart();
+
+        // Clear filters
+        if (searchInput) searchInput.value = "";
+        if (statusFilter) statusFilter.value = "";
+
+        // Clear customer form
+        if (cName) cName.value = "";
+        if (cPhone) cPhone.value = "";
+        if (cAddress) cAddress.value = "";
+        if (cNote) cNote.value = "";
+
+        // Clear add-product form
+        if (pName) pName.value = "";
+        if (pColor) pColor.value = "";
+        if (pSize) pSize.value = "";
+        if (pQty) pQty.value = "";
+        if (pCode) pCode.value = "";
+        if (pCostPrice) pCostPrice.value = "";
+        if (pOtherExpenses) pOtherExpenses.value = "";
+        if (pUnitCost) pUnitCost.value = "";
+
+        // Reload from Sheet
+        await loadInventory();
+        await loadOrdersPreview();
+        showSuccess("Local dashboard state reset.");
+      } catch (e) {
+        console.error("Reset error:", e);
+        showError("Reset nahi ho saka. Please try again.");
+      }
+    }
+
+    function handleOpenLiveSheet() {
+      clearMessages("Live with Google Sheet.");
+      // TODO: yahan apni Google Sheet ka URL dalen:
+      const sheetUrl = "";
+      if (sheetUrl) {
+        window.open(sheetUrl, "_blank");
+      } else {
+        showSuccess("Panel already live hai Apps Script (BASE_URL) ke through. Sheet ka URL code me set karein.");
+      }
+    }
+
     // ====== Login handling + Remember me ======
     function handleLogin() {
       if (!passwordInput) return;
@@ -2680,7 +3286,6 @@
           loginError.textContent = "";
         }
 
-        // remember me
         try {
           if (window.localStorage) {
             if (rememberMeCheckbox && rememberMeCheckbox.checked) {
@@ -2761,7 +3366,6 @@
     }
 
     if (addProductBtn) addProductBtn.addEventListener("click", handleAddProduct);
-    if (placeOrderBtn) addProductBtn && placeOrderBtn.addEventListener("click", handlePlaceOrder);
     if (placeOrderBtn) placeOrderBtn.addEventListener("click", handlePlaceOrder);
 
     if (reloadOrdersLink) {
@@ -2826,6 +3430,12 @@
         }
       });
     }
+    if (invCostPriceInput) {
+      invCostPriceInput.addEventListener("input", updateInventoryModalUnitCost);
+    }
+    if (invOtherExpensesInput) {
+      invOtherExpensesInput.addEventListener("input", updateInventoryModalUnitCost);
+    }
 
     // Order modal events
     if (orderModalCloseBtn) {
@@ -2868,6 +3478,25 @@
       });
     }
 
+    // Add product cost fields events
+    if (pCostPrice) pCostPrice.addEventListener("input", updateAddProductUnitCost);
+    if (pOtherExpenses) pOtherExpenses.addEventListener("input", updateAddProductUnitCost);
+
+    // Header buttons
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener("click", toggleDarkMode);
+    }
+    if (resetAllBtn) {
+      resetAllBtn.addEventListener("click", () => {
+        handleResetAll();
+      });
+    }
+    if (liveSheetBtn) {
+      liveSheetBtn.addEventListener("click", () => {
+        handleOpenLiveSheet();
+      });
+    }
+
     // ====== Initial load (after login only) ======
     async function initApp() {
       if (appInitialized) return;
@@ -2884,8 +3513,10 @@
       }
     }
 
-    // Auto login if remember me saved
+    // Apply theme + auto login if remember me saved
+    applyDarkModeFromStorage();
     autoLoginIfRemembered();
   </script>
 </body>
 </html>
+
